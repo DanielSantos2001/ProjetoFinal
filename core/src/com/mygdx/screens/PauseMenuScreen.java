@@ -78,12 +78,9 @@ public class PauseMenuScreen implements Screen {
 
 
 	private void setImagePosition() {
-		buttonManager.getContinueButton().setX(170);
-		buttonManager.getContinueButton().setY(350);
-		buttonManager.getSaveButton().setX(170);
-		buttonManager.getSaveButton().setY(200);
-		buttonManager.getExitButton().setX(170);
-		buttonManager.getExitButton().setY(50);
+		buttonManager.getContinueButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getContinueButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/1.1 - buttonManager.getContinueButton().getHeight()));
+		buttonManager.getSaveButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getSaveButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/1.55 - buttonManager.getSaveButton().getHeight()));
+		buttonManager.getExitButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getExitButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/2.65 - buttonManager.getExitButton().getHeight()));
 	}
 
 	private void addListeners() {

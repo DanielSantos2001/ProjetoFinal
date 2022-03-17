@@ -98,19 +98,11 @@ public class MainMenuScreen implements Screen {
 
 	private void setImagePosition() {
 		buttonManager.getStartButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getStartButton().getWidth()/2, Gdx.graphics.getHeight() - buttonManager.getStartButton().getHeight());
-		//buttonManager.getStartButton().setX(170);
-		//buttonManager.getStartButton().setY(375);
-		//buttonManager.getContinueButton().setX(170);
-		//buttonManager.getContinueButton().setY(255);
-		buttonManager.getStartButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getStartButton().getWidth()/2, Gdx.graphics.getHeight() - buttonManager.getStartButton().getHeight());
-		buttonManager.getOptionsButton().setX(170);
-		buttonManager.getOptionsButton().setY(135);
-		buttonManager.getCreditsButton().setX(170);
-		buttonManager.getCreditsButton().setY(15);
-		buttonManager.getMusicButton().setX(535);
-		buttonManager.getMusicButton().setY(0);
-		buttonManager.getNoMusicButton().setX(535);
-		buttonManager.getNoMusicButton().setY(0);
+		buttonManager.getContinueButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getContinueButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/1.65 - buttonManager.getContinueButton().getHeight()/3));
+		buttonManager.getOptionsButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getOptionsButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/2.9 - buttonManager.getOptionsButton().getHeight()/3));
+		buttonManager.getCreditsButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getCreditsButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/4.7 - buttonManager.getCreditsButton().getHeight()));
+		buttonManager.getMusicButton().setPosition(Gdx.graphics.getWidth() - buttonManager.getMusicButton().getWidth(), 0);
+		buttonManager.getNoMusicButton().setPosition(Gdx.graphics.getWidth() - buttonManager.getNoMusicButton().getWidth(), 0);
 	}
 
 	private void addListeners() {

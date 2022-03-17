@@ -41,16 +41,16 @@ public class ButtonManager {
 	private static ButtonManager button_instance = null;
 	
 	private ButtonManager() {
-		startTexture = new Texture(Gdx.files.internal("Textures/startButton.png"));
-		continueTexture = new Texture(Gdx.files.internal("Textures/continueButton.png"));
-		optionsTexture = new Texture(Gdx.files.internal("Textures/optionsButton.png"));
-		musicTexture = new Texture(Gdx.files.internal("Textures/musicButton.png"));
-		noMusicTexture = new Texture(Gdx.files.internal("Textures/noMusicButton.png"));
-		backTexture = new Texture(Gdx.files.internal("Textures/backButton.png"));
-		saveTexture = new Texture(Gdx.files.internal("Textures/saveButton.png"));
-		exitTexture = new Texture(Gdx.files.internal("Textures/exitButton.png"));
-		creditsTexture = new Texture(Gdx.files.internal("Textures/creditsButton.png"));
-		backSquareTexture = new Texture(Gdx.files.internal("Textures/backSquareButton.png"));
+		startTexture = new Texture("Textures/startButton.png");
+		continueTexture = new Texture("Textures/continueButton.png");
+		optionsTexture = new Texture("Textures/optionsButton.png");
+		musicTexture = new Texture("Textures/musicButton.png");
+		noMusicTexture = new Texture("Textures/noMusicButton.png");
+		backTexture = new Texture("Textures/backButton.png");
+		saveTexture = new Texture("Textures/saveButton.png");
+		exitTexture = new Texture("Textures/exitButton.png");
+		creditsTexture = new Texture("Textures/creditsButton.png");
+		backSquareTexture = new Texture("Textures/backSquareButton.png");
 		noMusicDrawable = new TextureRegionDrawable(new TextureRegion(noMusicTexture));
 		musicDrawable = new TextureRegionDrawable(new TextureRegion(musicTexture));
 		startDrawable = new TextureRegionDrawable(new TextureRegion(startTexture));

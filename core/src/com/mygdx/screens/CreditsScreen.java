@@ -94,8 +94,7 @@ public class CreditsScreen implements Screen {
 	}
 
 	private void setImagePosition() {
-		buttonManager.getBackSquareButton().setX(0);
-		buttonManager.getBackSquareButton().setY(380);
+		buttonManager.getBackSquareButton().setPosition(0, (float) (Gdx.graphics.getHeight() - buttonManager.getBackButton().getHeight()));
 	}
 	
 	private void addListeners() {
