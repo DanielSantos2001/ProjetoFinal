@@ -19,7 +19,7 @@ import com.mygdx.game.KnightsOath;
 public class MainGameScreen implements Screen {
 	private KnightsOath mainGame;
 	private Texture img;
-	private static final float speed = 120;
+	private static final float speed = 1;
 	private float x;
 	private float y;
 	private TiledMap map;
@@ -38,20 +38,25 @@ public class MainGameScreen implements Screen {
 
 	@Override
 	public void show() {
-
+		
 	}
 
 	@Override
 	public void render(float delta) {
+		
 		this.mapRendering();
 		this.playerMovement();
+		this.moveCamera();
 		
 		ScreenUtils.clear(100f / 255f, 100f / 255f, 250f / 255f, 1f);
 		camera.update();
 		renderer.setView(camera);
 		renderer.render();
+		mainGame.batch.setProjectionMatrix(camera.combined);
 		mainGame.batch.begin();
-		mainGame.batch.draw(sprite,x,y);
+		
+		mainGame.batch.draw(sprite,x,y,0.5f,0.5f);
+		
 		mainGame.batch.end();
 	}
 
@@ -105,15 +110,15 @@ public class MainGameScreen implements Screen {
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)) {
 			mainGame.setScreen(new PauseMenuScreen(mainGame));
 		}
+		
+		
+		sprite.setX(x);
+		sprite.setY(y);
 	}
 	
 	private void mapRendering() {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, (w / h) * 10, 10);
-		camera.update();
+		camera = new OrthographicCamera(4,4);
+		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		
 		cameraController = new OrthoCamController(camera);
 		Gdx.input.setInputProcessor(cameraController);
@@ -123,6 +128,11 @@ public class MainGameScreen implements Screen {
 		assetManager.load("Maps/map1.tmx", TiledMap.class);
 		assetManager.finishLoading();
 		map = assetManager.get("Maps/map1.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map, 1f / 48f);
+		renderer = new OrthogonalTiledMapRenderer(map, 1f /16f);
+	}
+	
+	private void moveCamera() {
+		camera.position.x = sprite.getX();
+		camera.position.y = sprite.getY();
 	}
 }
