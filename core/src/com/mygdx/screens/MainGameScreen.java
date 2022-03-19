@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.KnightsOath;
 
 public class MainGameScreen implements Screen {
-	private KnightsOath mainGame;
+	private final KnightsOath mainGame;
 	private Texture img;
 	private static final float speed = 1;
 	private float x;
@@ -34,6 +34,8 @@ public class MainGameScreen implements Screen {
 		mainGame = game;
 		img = new Texture("Textures/knight.png");
 		sprite = new Sprite(img);
+		x = (float) 2.018795;
+		y = (float) 2.016694;
 	}
 
 	@Override
@@ -56,7 +58,6 @@ public class MainGameScreen implements Screen {
 		mainGame.batch.begin();
 		
 		mainGame.batch.draw(sprite,x,y,0.5f,0.5f);
-		
 		mainGame.batch.end();
 	}
 
@@ -108,7 +109,7 @@ public class MainGameScreen implements Screen {
 		}
 		
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-			mainGame.setScreen(new PauseMenuScreen(mainGame));
+			mainGame.setScreen(new PauseMenuScreen(mainGame,this));
 		}
 		
 		

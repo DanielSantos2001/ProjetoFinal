@@ -12,10 +12,11 @@ import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
 public class CreditsScreen implements Screen {
-	private KnightsOath mainGame;
+	private final KnightsOath mainGame;
 	private Texture creditsTexture;
 	private Stage stage;
 	private int y;
+	private int x;
 	private float speed;
 	private ButtonManager buttonManager;
 
@@ -23,8 +24,9 @@ public class CreditsScreen implements Screen {
 		mainGame = game;
 		stage = new Stage(new ScreenViewport());
 		creditsTexture = new Texture("Textures/credits.png");
-		y = -1530;
-		speed = 30;
+		y = -670;
+		x = Gdx.graphics.getWidth()/2-creditsTexture.getWidth()/2;
+		speed = 10;
 		buttonManager = ButtonManager.getInstance();
 	}
 
@@ -45,7 +47,7 @@ public class CreditsScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		
-		mainGame.batch.draw(creditsTexture,0,y);
+		mainGame.batch.draw(creditsTexture,x,y);
 		
 		if(y != 84) {
 			y += speed * Gdx.graphics.getDeltaTime();

@@ -10,12 +10,14 @@ import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
 public class PauseMenuScreen implements Screen {
-	private KnightsOath mainGame;
+	private final KnightsOath mainGame;
+	private final Screen parentScreen;
 	private Stage stage;
 	private ButtonManager buttonManager;
 	
-	public PauseMenuScreen(KnightsOath game) {
+	public PauseMenuScreen(KnightsOath game, Screen parent) {
 		mainGame = game;
+		parentScreen = parent;
 		stage = new Stage(new ScreenViewport());
 		buttonManager = ButtonManager.getInstance();
 	}
@@ -87,6 +89,7 @@ public class PauseMenuScreen implements Screen {
 		buttonManager.getContinueButton().addListener(new InputListener() {
 			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				mainGame.setScreen(parentScreen);
 				return false;
 			}
 		});
