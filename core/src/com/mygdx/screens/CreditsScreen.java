@@ -26,7 +26,7 @@ public class CreditsScreen implements Screen {
 		creditsTexture = new Texture("Textures/credits.png");
 		y = -670;
 		x = Gdx.graphics.getWidth()/2-creditsTexture.getWidth()/2;
-		speed = 10;
+		speed = 1;
 		buttonManager = ButtonManager.getInstance();
 	}
 
