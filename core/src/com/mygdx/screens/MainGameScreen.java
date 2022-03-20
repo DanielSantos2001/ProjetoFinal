@@ -34,8 +34,8 @@ public class MainGameScreen implements Screen {
 		mainGame = game;
 		img = new Texture("Textures/knight.png");
 		sprite = new Sprite(img);
-		x = (float) 2.018795;
-		y = (float) 2.016694;
+		x = 5f;
+		y = 5f;
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class MainGameScreen implements Screen {
 	}
 	
 	private void mapRendering() {
-		camera = new OrthographicCamera(4,4);
+		camera = new OrthographicCamera(5,5);
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		
 		cameraController = new OrthoCamController(camera);
