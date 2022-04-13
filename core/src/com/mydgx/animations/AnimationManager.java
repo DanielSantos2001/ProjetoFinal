@@ -14,31 +14,13 @@ public class AnimationManager {
 
 	public AnimationManager() {
 		this.knightIdleSheet = new Texture("Textures/knightIdle.png");
-		this.knightWalkSheet =  new Texture("Textures/knightWalk.png");
+		this.knightWalkSheet =  new Texture("Textures/knightRun.png");
 		this.knightSlashSheet = new Texture("Textures/knightSlash.png");
 	}
 
 
 	public void idleAnimation(float stateTime) {
-		TextureRegion[][] tmp = TextureRegion.split(knightIdleSheet,knightIdleSheet.getWidth()/4, knightIdleSheet.getHeight());
-
-		TextureRegion[] idleFrames = new TextureRegion[4];
-
-		int index = 0;
-
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<4;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
-
-		idleAnimation = new Animation<TextureRegion>(0.15f,idleFrames);
-
-		stateTime = 0f;
-	}
-
-	public void walkAnimation(float stateTime) {
-		TextureRegion[][] tmp = TextureRegion.split(knightWalkSheet,knightWalkSheet.getWidth()/8, knightWalkSheet.getHeight());
+		TextureRegion[][] tmp = TextureRegion.split(knightIdleSheet,knightIdleSheet.getWidth()/8, knightIdleSheet.getHeight());
 
 		TextureRegion[] idleFrames = new TextureRegion[8];
 
@@ -50,13 +32,13 @@ public class AnimationManager {
 			}
 		}
 
-		walkAnimation = new Animation<TextureRegion>(0.15f,idleFrames);
+		idleAnimation = new Animation<TextureRegion>(0.15f,idleFrames);
 
 		stateTime = 0f;
 	}
 
-	public void slashAnimation(float stateTime) {
-		TextureRegion[][] tmp = TextureRegion.split(knightSlashSheet,knightSlashSheet.getWidth()/10, knightSlashSheet.getHeight());
+	public void walkAnimation(float stateTime) {
+		TextureRegion[][] tmp = TextureRegion.split(knightWalkSheet,knightWalkSheet.getWidth()/10, knightWalkSheet.getHeight());
 
 		TextureRegion[] idleFrames = new TextureRegion[10];
 
@@ -64,6 +46,24 @@ public class AnimationManager {
 
 		for(int i = 0;i<1;i++) {
 			for(int j = 0;j<10;j++) {
+				idleFrames[index++] = tmp[i][j];
+			}
+		}
+
+		walkAnimation = new Animation<TextureRegion>(0.15f,idleFrames);
+
+		stateTime = 0f;
+	}
+
+	public void slashAnimation(float stateTime) {
+		TextureRegion[][] tmp = TextureRegion.split(knightSlashSheet,knightSlashSheet.getWidth()/6, knightSlashSheet.getHeight());
+
+		TextureRegion[] idleFrames = new TextureRegion[6];
+
+		int index = 0;
+
+		for(int i = 0;i<1;i++) {
+			for(int j = 0;j<6;j++) {
 				idleFrames[index++] = tmp[i][j];
 			}
 		}
@@ -76,14 +76,7 @@ public class AnimationManager {
 	public Texture getKnightIdleSheet() {
 		return this.knightIdleSheet;
 	}
-	
-	public Texture getKnightWalkSheet() {
-		return this.knightIdleSheet;
-	}
-	
-	public Texture getKnightSlashSheet() {
-		return this.knightIdleSheet;
-	}
+
 	public Animation<TextureRegion> getIdleAnimation(){
 		return idleAnimation;
 	}

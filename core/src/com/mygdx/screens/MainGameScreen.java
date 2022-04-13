@@ -1,7 +1,6 @@
 package com.mygdx.screens;
 
 import com.mygdx.camera.*;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
@@ -57,7 +56,7 @@ public class MainGameScreen implements Screen {
 		mainGame.batch.setProjectionMatrix(cameraManager.getCamera().combined);
 		mainGame.batch.begin();
 
-		mainGame.batch.draw(currentFrame,x,y,0.5f,0.5f);
+		mainGame.batch.draw(currentFrame,x,y,1.3f,1.3f);
 		mainGame.batch.end();
 	}
 
@@ -82,8 +81,6 @@ public class MainGameScreen implements Screen {
 	@Override
 	public void dispose() {
 		animationManager.getKnightIdleSheet().dispose();
-		animationManager.getKnightWalkSheet().dispose();
-		animationManager.getKnightSlashSheet().dispose();
 		mainGame.batch.dispose();
 	}
 
