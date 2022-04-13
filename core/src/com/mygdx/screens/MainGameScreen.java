@@ -20,6 +20,7 @@ public class MainGameScreen implements Screen {
 	private TextureRegion currentFrame;
 	private AnimationManager animationManager;
 	private CameraManager cameraManager;
+	private String state;
 
 	public MainGameScreen(KnightsOath game){
 		mainGame = game;
@@ -33,8 +34,8 @@ public class MainGameScreen implements Screen {
 	@Override
 	public void show() {
 		animationManager.idleAnimation(stateTime);
-		animationManager.walkAnimation(stateTime);
-		animationManager.slashAnimation(stateTime);
+		animationManager.walkAnimation(stateTime, "walkFront",animationManager.getWalkSheet("walkFront"));
+		animationManager.attackAnimation(stateTime,"attackFront",animationManager.getAttackSheet("attackFront"));
 	}
 
 	@Override
@@ -81,37 +82,97 @@ public class MainGameScreen implements Screen {
 	@Override
 	public void dispose() {
 		animationManager.getKnightIdleSheet().dispose();
+		animationManager.getWalkSheet("walkBack").dispose();
+		animationManager.getWalkSheet("walkFront").dispose();
+		animationManager.getWalkSheet("walkRight").dispose();
+		animationManager.getWalkSheet("walkLeft").dispose();
+		animationManager.getAttackSheet("attackFront").dispose();
+		animationManager.getAttackSheet("attackBack").dispose();
+		animationManager.getAttackSheet("attackLeft").dispose();
+		animationManager.getAttackSheet("attackRight").dispose();
 		mainGame.batch.dispose();
 	}
 
 	private void playerMovement() {
+		this.state = "attackIdle";
+		
 		if(Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W)) {
 			y += speed * Gdx.graphics.getDeltaTime();	
+			
+			animationManager.walkAnimation(stateTime, "walkBack",animationManager.getWalkSheet("walkBack"));	
+			
+			animationManager.attackAnimation(stateTime, "attackBack", animationManager.getAttackSheet("attackBack"));
+			
+			currentFrame = animationManager.getWalkAnimation("walkBack").getKeyFrame(stateTime,true);
+			
+			this.state = "attackBack";
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) {
 			y -= speed * Gdx.graphics.getDeltaTime();
+			
+			animationManager.walkAnimation(stateTime, "walkFront",animationManager.getWalkSheet("walkFront"));	
+			
+			animationManager.attackAnimation(stateTime, "attackFront", animationManager.getAttackSheet("attackFront"));
+			
+			currentFrame = animationManager.getWalkAnimation("walkFront").getKeyFrame(stateTime,true);
+			
+			this.state = "attackFront";
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A)) {
 			x -= speed * Gdx.graphics.getDeltaTime();
+			
+			animationManager.walkAnimation(stateTime, "walkLeft",animationManager.getWalkSheet("walkLeft"));	
+			
+			animationManager.attackAnimation(stateTime, "attackLeft", animationManager.getAttackSheet("attackLeft"));
+			
+			currentFrame = animationManager.getWalkAnimation("walkLeft").getKeyFrame(stateTime,true);
+			
+			this.state = "attackLeft";
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D)) {
 			x += speed * Gdx.graphics.getDeltaTime();
-			currentFrame = animationManager.getWalkAnimation().getKeyFrame(stateTime,true);
+			
+			animationManager.walkAnimation(stateTime, "walkRight",animationManager.getWalkSheet("walkRight"));	
+			
+			animationManager.attackAnimation(stateTime, "attackRight", animationManager.getAttackSheet("attackRight"));
+			
+			currentFrame = animationManager.getWalkAnimation("walkRight").getKeyFrame(stateTime,true);
+			
+			this.state = "attackRight";
+
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.SPACE)) {
-			currentFrame = animationManager.getSlashAnimation().getKeyFrame(stateTime,true);
+			this.verifyAttackState();
 		}
 
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)) {
 			mainGame.setScreen(new PauseMenuScreen(mainGame,this));
 		}
 
-
 		sprite.setX(x);
 		sprite.setY(y);
+	}
+
+	private void verifyAttackState() {
+		switch(this.state) {
+		case "attackFront":
+			currentFrame = animationManager.getAttackAnimation("attackFront").getKeyFrame(stateTime,true);
+			break;
+		case "attackLeft":
+			currentFrame = animationManager.getAttackAnimation("attackLeft").getKeyFrame(stateTime,true);
+			break;
+		case "attackRight":
+			currentFrame = animationManager.getAttackAnimation("attackRight").getKeyFrame(stateTime,true);
+			break;
+		case "attackBack":
+			currentFrame = animationManager.getAttackAnimation("attackBack").getKeyFrame(stateTime,true);
+			break;
+		default:
+			currentFrame = animationManager.getAttackAnimation("attackFront").getKeyFrame(stateTime,true);
+		}
 	}
 }

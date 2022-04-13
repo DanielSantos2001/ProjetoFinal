@@ -40,16 +40,16 @@ public class ButtonManager {
 	private static ButtonManager button_instance = null;
 	
 	private ButtonManager() {
-		startTexture = new Texture("Textures/startButton.png");
-		continueTexture = new Texture("Textures/continueButton.png");
-		optionsTexture = new Texture("Textures/optionsButton.png");
-		musicTexture = new Texture("Textures/musicButton.png");
-		noMusicTexture = new Texture("Textures/noMusicButton.png");
-		backTexture = new Texture("Textures/backButton.png");
-		saveTexture = new Texture("Textures/saveButton.png");
-		exitTexture = new Texture("Textures/exitButton.png");
-		creditsTexture = new Texture("Textures/creditsButton.png");
-		backSquareTexture = new Texture("Textures/backSquareButton.png");
+		startTexture = new Texture("Textures/Buttons/startButton.png");
+		continueTexture = new Texture("Textures/Buttons/continueButton.png");
+		optionsTexture = new Texture("Textures/Buttons/optionsButton.png");
+		musicTexture = new Texture("Textures/Buttons/musicButton.png");
+		noMusicTexture = new Texture("Textures/Buttons/noMusicButton.png");
+		backTexture = new Texture("Textures/Buttons/backButton.png");
+		saveTexture = new Texture("Textures/Buttons/saveButton.png");
+		exitTexture = new Texture("Textures/Buttons/exitButton.png");
+		creditsTexture = new Texture("Textures/Buttons/creditsButton.png");
+		backSquareTexture = new Texture("Textures/Buttons/backSquareButton.png");
 		noMusicDrawable = new TextureRegionDrawable(new TextureRegion(noMusicTexture));
 		musicDrawable = new TextureRegionDrawable(new TextureRegion(musicTexture));
 		startDrawable = new TextureRegionDrawable(new TextureRegion(startTexture));
