@@ -23,7 +23,7 @@ public class CreditsScreen implements Screen {
 	public CreditsScreen(KnightsOath game) {
 		mainGame = game;
 		stage = new Stage(new ScreenViewport());
-		creditsTexture = new Texture("Textures/credits.png");
+		creditsTexture = new Texture("Textures/Buttons/credits.png");
 		y = -670;
 		x = Gdx.graphics.getWidth()/2-creditsTexture.getWidth()/2;
 		speed = 10;
