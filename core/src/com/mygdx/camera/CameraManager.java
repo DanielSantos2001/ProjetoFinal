@@ -10,6 +10,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+import java.awt.*;
+
 public class CameraManager {
 	private OrthographicCamera camera;
 	private TiledMap map;
@@ -18,7 +20,7 @@ public class CameraManager {
 	private OrthoCamController cameraController;
 
 	public CameraManager() {
-		camera = new OrthographicCamera(9,9);
+		camera = new OrthographicCamera(150,150);
 		assetManager = new AssetManager();
 		cameraController = new OrthoCamController(camera);
 	}
@@ -32,23 +34,21 @@ public class CameraManager {
 		assetManager.finishLoading();
 		
 		map = assetManager.get("Maps/map1.tmx");
-		renderer = new OrthogonalTiledMapRenderer(map, 1f /16f);
+		renderer = new OrthogonalTiledMapRenderer(map, 1f);
 	}
 	
-	public void moveCamera(Sprite sprite) {
-		camera.position.x = sprite.getX()+0.8f;
-		camera.position.y = sprite.getY()+0.5f;
+	public void moveCamera(Rectangle bounds) {
+		camera.position.x = bounds.x;
+		camera.position.y = bounds.y;
 	}
 	
 	public OrthographicCamera getCamera() {
 		return camera;
 	}
-
-	public AssetManager getAssetManager() {
-		return assetManager;
-	}
 	
 	public TiledMapRenderer getMapRenderer() {
 		return renderer;
 	}
+
+	public TiledMap getMap() {return map;}
 }
