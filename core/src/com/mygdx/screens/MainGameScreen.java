@@ -86,6 +86,12 @@ public class MainGameScreen implements Screen {
             this.verifySkeletonAttackState();
             currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime,true);
             healthBar.setValue(healthBar.getValue() - 0.1f);
+
+            if(healthBar.getValue() == 0.0f){
+                mainGame.dispose();
+                mainGame.setScreen(new MainMenuScreen(mainGame));
+
+            }
         }
 
         cameraManager.getCamera().update();
