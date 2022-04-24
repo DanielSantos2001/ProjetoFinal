@@ -18,6 +18,7 @@ public class TextureManager {
     private Texture skeletonAttackRightSheet;
     private Texture knightAttackLeftSheet;
     private Texture skeletonAttackLeftSheet;
+    private Texture knightHurtSheet;
 
     public TextureManager(){
         this.knightIdleSheet = new Texture("Textures/Char/knightIdle.png");
@@ -35,11 +36,13 @@ public class TextureManager {
         this.skeletonAttackLeftSheet = new Texture("Textures/Enemy/Skeleton/skeletonAttackLeft.png");
         this.knightAttackRightSheet = new Texture("Textures/Char/knightAttackRight.png");
         this.skeletonAttackRightSheet = new Texture("Textures/Enemy/Skeleton/skeletonAttackRight.png");
+        this.knightHurtSheet = new Texture("Textures/Char/knightHurt.png");
     }
 
     public Texture getKnightIdleSheet() {
         return this.knightIdleSheet;
     }
+    public Texture getKnightHurtSheet(){return this.knightHurtSheet;}
     public Texture getSkeletonIdleSheet(){
         return this.skeletonIdleSheet;
     }

@@ -1,6 +1,8 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.animations.TextureManager;
 import com.mygdx.camera.*;
 import com.badlogic.gdx.Gdx;
@@ -10,17 +12,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.animations.AnimationManager;
+import com.mygdx.game.HealthBar;
 import com.mygdx.game.KnightsOath;
 
-import java.awt.*;
 
 public class MainGameScreen implements Screen {
     private final KnightsOath mainGame;
-    private float knightSpeed = 1.5f;
+    private float knightSpeed = 80f;
     private float skeletonSpeed = 0.5f;
-    private float skeletonX;
-    private float skeletonY;
     private Sprite knightSprite;
+    private float knightX;
+    private float knightY;
     private float stateTime;
     private TextureRegion currentKnightFrame;
     private TextureRegion currentSkeletonFrame;
@@ -30,29 +32,42 @@ public class MainGameScreen implements Screen {
     private String attackState;
     private TiledMapTileLayer collisionLayer;
     private Rectangle knightBounds;
+    private Rectangle skeletonBounds;
 
     private String blockedKey = "blocked";
+    private long t0;
+    private long timer;
+    private Stage stage;
+    private HealthBar healthBar;
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
         animationManager = new AnimationManager();
         cameraManager = new CameraManager();
         textureManager = new TextureManager();
         knightSprite = new Sprite(textureManager.getKnightIdleSheet());
-        skeletonX = 855.60596f;
-        skeletonY = 977.9982f;
+        knightX = 480;
+        knightY = 15;
         knightBounds = new Rectangle(480,15,30,30);
+        skeletonBounds = new Rectangle(856,977,30,30);
     }
 
     @Override
     public void show() {
         animationManager.knightIdleAnimation();
         animationManager.skeletonIdleAnimation();
+        animationManager.knightHurtAnimation();
         animationManager.knightWalkAnimation("walkFront", textureManager.getKnightWalkSheet("walkFront"));
         animationManager.skeletonWalkBackAnimation(textureManager.getSkeletonWalkBackSheet());
         animationManager.knightAttackAnimation("attackFront", textureManager.getKnightAttackSheet("attackFront"));
         animationManager.skeletonAttackAnimation("attackFront", textureManager.getSkeletonAttackSheet("attackFront"));
         cameraManager.mapRendering();
         collisionLayer = (TiledMapTileLayer) cameraManager.getMap().getLayers().get(0);
+
+        stage = new Stage();
+
+        healthBar = new HealthBar(100, 40);
+        healthBar.setPosition(10, Gdx.graphics.getHeight() - 20);
+        stage.addActor(healthBar);
     }
 
     @Override
@@ -67,6 +82,12 @@ public class MainGameScreen implements Screen {
         this.playerMovement();
         this.enemyFollowPlayer();
 
+        if(knightBounds.overlaps(skeletonBounds)){
+            this.verifySkeletonAttackState();
+            currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime,true);
+            healthBar.setValue(healthBar.getValue() - 0.1f);
+        }
+
         cameraManager.getCamera().update();
         cameraManager.getMapRenderer().setView(cameraManager.getCamera());
         cameraManager.getMapRenderer().render();
@@ -74,9 +95,11 @@ public class MainGameScreen implements Screen {
         mainGame.batch.begin();
 
         mainGame.batch.draw(currentKnightFrame,knightBounds.x,knightBounds.y, knightBounds.width,knightBounds.height);
-        mainGame.batch.draw(currentSkeletonFrame, skeletonX, skeletonY, 30f, 30f);
+        mainGame.batch.draw(currentSkeletonFrame, skeletonBounds.x, skeletonBounds.y, skeletonBounds.width, skeletonBounds.height);
 
         mainGame.batch.end();
+        stage.draw();
+        stage.act();
     }
 
     @Override
@@ -101,6 +124,7 @@ public class MainGameScreen implements Screen {
     public void dispose() {
         textureManager.getKnightIdleSheet().dispose();
         textureManager.getSkeletonIdleSheet().dispose();
+        textureManager.getKnightHurtSheet().dispose();
         textureManager.getKnightWalkSheet("walkBack").dispose();
         textureManager.getKnightWalkSheet("walkFront").dispose();
         textureManager.getKnightWalkSheet("walkRight").dispose();
@@ -122,7 +146,7 @@ public class MainGameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Keys.UP) || Gdx.input.isKeyPressed(Keys.W)) {
 
             if(!collidesTop()){
-                knightBounds.y += knightSpeed;
+                knightBounds.y += knightSpeed * Gdx.graphics.getDeltaTime();
             }
 
             animationManager.knightWalkAnimation("walkBack", textureManager.getKnightWalkSheet("walkBack"));
@@ -139,7 +163,7 @@ public class MainGameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Keys.DOWN) || Gdx.input.isKeyPressed(Keys.S)) {
 
             if(!collidesBottom()){
-                knightBounds.y -= knightSpeed;
+                knightBounds.y -= knightSpeed * Gdx.graphics.getDeltaTime();
             }
 
             animationManager.knightWalkAnimation("walkFront", textureManager.getKnightWalkSheet("walkFront"));
@@ -156,7 +180,7 @@ public class MainGameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Keys.LEFT) || Gdx.input.isKeyPressed(Keys.A)) {
 
             if(!collidesLeft()){
-                knightBounds.x -= knightSpeed;
+                knightBounds.x -= knightSpeed * Gdx.graphics.getDeltaTime();
             }
 
             animationManager.knightWalkAnimation("walkLeft", textureManager.getKnightWalkSheet("walkLeft"));
@@ -173,7 +197,7 @@ public class MainGameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Keys.RIGHT) || Gdx.input.isKeyPressed(Keys.D)) {
 
             if(!collidesRight()){
-                knightBounds.x += knightSpeed;
+                knightBounds.x += knightSpeed * Gdx.graphics.getDeltaTime();
             }
 
             animationManager.knightWalkAnimation("walkRight", textureManager.getKnightWalkSheet("walkRight"));
@@ -235,11 +259,11 @@ public class MainGameScreen implements Screen {
         int diffX;
         int diffY;
 
-        if (knightBounds.x > 815.9621 && knightBounds.x < 989.7722 && knightBounds.y > 884.583 && knightBounds.y < 1026.9208) {
-            MoveToX = knightBounds.x;
-            MoveToY = knightBounds.y;
+        if (knightBounds.x > 815.9621f && knightBounds.x < 989.7722f && knightBounds.y > 884.583f && knightBounds.y < 1026.9208f) {
+            MoveToX = (int) knightBounds.x;
+            MoveToY = (int) knightBounds.y;
 
-            this.verifySkeletonAttackState();
+
         } else {
             MoveToX = (int) 855.60596f;
             MoveToY = (int) 977.9982f;
@@ -248,8 +272,8 @@ public class MainGameScreen implements Screen {
             currentSkeletonFrame = animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime, true);
         }
 
-        diffX = (int) (MoveToX - skeletonX);
-        diffY = (int) (MoveToY - skeletonY);
+        diffX = (int) (MoveToX - skeletonBounds.x);
+        diffY = (int) (MoveToY - skeletonBounds.y);
         angle = (float) Math.atan2(diffY, diffX);
 
         if(diffX == 0 && diffY == 0 ){
@@ -260,8 +284,23 @@ public class MainGameScreen implements Screen {
             skeletonSpeed = 0.5f;
         }
 
-        skeletonX += (skeletonSpeed) * Math.cos(angle);
-        skeletonY += (skeletonSpeed) * Math.sin(angle);
+        skeletonBounds.x += (skeletonSpeed) * Math.cos(angle);
+        skeletonBounds.y += (skeletonSpeed) * Math.sin(angle);
+    }
+
+    public boolean isReadyToGetHit(){
+        boolean can;
+        long delta = System.currentTimeMillis() - t0;
+        timer += delta;
+
+        if(timer > 1000f){
+            timer = 0;
+            can = true;
+        } else {
+            can = false;
+        }
+        t0 = System.currentTimeMillis();
+        return can;
     }
 
     private boolean isCellBlocked(int x, int y) {

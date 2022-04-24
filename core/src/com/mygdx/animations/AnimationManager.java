@@ -20,6 +20,7 @@ public class AnimationManager {
 	private Animation<TextureRegion> skeletonAttackRightAnimation;
 	private Animation<TextureRegion> knightAttackLeftAnimation;
 	private Animation<TextureRegion> skeletonAttackLeftAnimation;
+	private Animation<TextureRegion> knightHurtAnimation;
 	private TextureManager textureManager;
 	public AnimationManager() {
 		textureManager = new TextureManager();
@@ -39,6 +40,22 @@ public class AnimationManager {
 		}
 
 		knightIdleAnimation = new Animation<>(0.5f, idleFrames);
+	}
+
+	public void knightHurtAnimation(){
+		TextureRegion[][] tmp = TextureRegion.split(textureManager.getKnightHurtSheet(),textureManager.getKnightHurtSheet().getWidth()/2, textureManager.getKnightHurtSheet().getHeight());
+
+		TextureRegion[] idleFrames = new TextureRegion[2];
+
+		int index = 0;
+
+		for(int i = 0;i<1;i++) {
+			for(int j = 0;j<2;j++) {
+				idleFrames[index++] = tmp[i][j];
+			}
+		}
+
+		knightHurtAnimation = new Animation<>(0.5f, idleFrames);
 	}
 
 	public void skeletonIdleAnimation() {
@@ -169,6 +186,7 @@ public class AnimationManager {
 	public Animation<TextureRegion> getKnightIdleAnimation(){
 		return knightIdleAnimation;
 	}
+	public Animation<TextureRegion> getKnightHurtAnimation(){return knightHurtAnimation;}
 	public Animation<TextureRegion> getSkeletonIdleAnimation(){return  skeletonIdleAnimation;}
 	public Animation<TextureRegion> getSkeletonWalkBackAnimation(){return skeletonWalkBackAnimation;}
 	public Animation<TextureRegion> getKnightWalkAnimation(String walkAnimation){
