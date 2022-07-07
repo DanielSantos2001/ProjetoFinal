@@ -26,6 +26,8 @@ public class AnimationManager {
     private Animation<TextureRegion> knightBlockFrontAnimation;
     private Animation<TextureRegion> knightBlockRightAnimation;
     private Animation<TextureRegion> knightBlockLeftAnimation;
+    private Animation<TextureRegion> loadingAnimation;
+    private Animation<TextureRegion> executionerIdleAnimation;
     private final TextureManager textureManager;
     private TextureRegion[][] tmp;
     private TextureRegion[] idleFrames;
@@ -34,6 +36,21 @@ public class AnimationManager {
         textureManager = new TextureManager();
     }
 
+    public void loadingAnimation(){
+        tmp = TextureRegion.split(textureManager.getLoadingSheet(),textureManager.getLoadingSheet().getWidth()/5,textureManager.getLoadingSheet().getHeight()/5);
+
+        idleFrames = new TextureRegion[25];
+
+        int index = 0;
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        loadingAnimation = new Animation<>(0.065f, idleFrames);
+    }
     public void knightIdleAnimation() {
         tmp = TextureRegion.split(textureManager.getKnightIdleSheet(), textureManager.getKnightIdleSheet().getWidth() / 2, textureManager.getKnightIdleSheet().getHeight());
 
@@ -50,6 +67,22 @@ public class AnimationManager {
         knightIdleAnimation = new Animation<>(0.5f, idleFrames);
     }
 
+    public void executionerIdleAnimation(){
+        tmp = TextureRegion.split(textureManager.getExecutionerIdleSheet(),textureManager.getExecutionerIdleSheet().getWidth()/4,textureManager.getExecutionerIdleSheet().getHeight()/2);
+
+        idleFrames = new TextureRegion[8];
+
+        int index = 0;
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 4; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        executionerIdleAnimation = new Animation<>(0.15f,idleFrames);
+    }
+
     public void knightHurtAnimation() {
         tmp = TextureRegion.split(textureManager.getKnightHurtSheet(), textureManager.getKnightHurtSheet().getWidth() / 2, textureManager.getKnightHurtSheet().getHeight());
 
@@ -63,7 +96,7 @@ public class AnimationManager {
             }
         }
 
-        knightHurtAnimation = new Animation<>(0.15f, idleFrames);
+        knightHurtAnimation = new Animation<>(0.25f, idleFrames);
     }
 
     public void skeletonIdleAnimation() {
@@ -239,6 +272,8 @@ public class AnimationManager {
         }
     }
 
+    public Animation<TextureRegion> getExecutionerIdleAnimation(){return this.executionerIdleAnimation;}
+    public Animation<TextureRegion> getLoadingAnimation(){return this.loadingAnimation;}
     public Animation<TextureRegion> getSkeletonDeathAnimation(){return skeletonDeathAnimation;}
     public Animation<TextureRegion> getKnightIdleAnimation() {
         return knightIdleAnimation;

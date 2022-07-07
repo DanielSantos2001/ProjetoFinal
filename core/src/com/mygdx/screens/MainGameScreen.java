@@ -1,6 +1,7 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.animations.AnimationManager;
 import com.mygdx.animations.TextureManager;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.Screen;
 import com.mygdx.game.HealthBar;
 import com.mygdx.game.KnightsOath;
 import com.mygdx.models.Knight;
+
 
 
 public class MainGameScreen implements Screen {
@@ -25,7 +27,6 @@ public class MainGameScreen implements Screen {
     private double knightAttackTimer = 0;
     public static boolean doAnimation = false;
     public static boolean isDead = false;
-    
 
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
@@ -39,7 +40,6 @@ public class MainGameScreen implements Screen {
     public void show() {
         animationManager.knightHurtAnimation();
         cameraManager.mapRendering();
-
         stage = new Stage();
         skeletonHealthBar = new HealthBar(100, 10);
         skeletonHealthBar.setPosition(540, 400);
@@ -50,13 +50,15 @@ public class MainGameScreen implements Screen {
     @Override
     public void render(float delta) {
         mainGame.batch.begin();
-        stateTime += Gdx.graphics.getDeltaTime();
+        stateTime += delta;
         knight.create();
         knight.render(delta);
+
         if(!isDead){
             invincibilityTime(delta);
             knightCanAttack(delta);
         }
+
         mainGame.batch.end();
         stage.draw();
         stage.act();

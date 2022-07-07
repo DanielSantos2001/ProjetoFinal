@@ -24,8 +24,12 @@ public class TextureManager {
     private final Texture knightBlockFrontSheet;
     private final Texture knightBlockLeftSheet;
     private final Texture knightBlockRightSheet;
+    private final Texture executionerIdleSheet;
+    private final Texture loadingSheet;
 
     public TextureManager(){
+        this.executionerIdleSheet = new Texture("Textures/Enemy/Executioner/executionerIdle.png");
+        this.loadingSheet = new Texture("loadingAnimation.png");
         this.knightIdleSheet = new Texture("Textures/Char/knightIdle.png");
         this.skeletonIdleSheet = new Texture("Textures/Enemy/Skeleton/skeletonIdle.png");
         this.skeletonDeathSheet = new Texture("Textures/Enemy/Skeleton/skeletonDeath.png");
@@ -49,6 +53,8 @@ public class TextureManager {
         this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getExecutionerIdleSheet(){return this.executionerIdleSheet;}
+    public Texture getLoadingSheet(){return this.loadingSheet;}
     public Texture getSkeletonDeathSheet(){return this.skeletonDeathSheet;}
     public Texture getKnightIdleSheet() {
         return this.knightIdleSheet;

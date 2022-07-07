@@ -11,19 +11,18 @@ import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
 public class OptionsScreen implements Screen{
-	private KnightsOath mainGame;
-	private Stage stage;
-	private ButtonManager buttonManager;
+	private final KnightsOath mainGame;
+	private final Stage stage;
+	private final ButtonManager buttonManager;
 	
 	public OptionsScreen(KnightsOath game) {
 		mainGame = game;
-		stage = new Stage(new ScreenViewport());
+		stage = new Stage();
 		buttonManager = ButtonManager.getInstance();
 	}
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		this.addStageActors();
 		this.setImagePosition();
 		this.addListeners();
@@ -43,32 +42,22 @@ public class OptionsScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void addListeners() {
