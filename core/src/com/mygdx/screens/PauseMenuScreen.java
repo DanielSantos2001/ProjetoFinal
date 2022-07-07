@@ -12,8 +12,8 @@ import com.mygdx.game.KnightsOath;
 public class PauseMenuScreen implements Screen {
 	private final KnightsOath mainGame;
 	private final Screen parentScreen;
-	private Stage stage;
-	private ButtonManager buttonManager;
+	private final Stage stage;
+	private final ButtonManager buttonManager;
 	
 	public PauseMenuScreen(KnightsOath game, Screen parent) {
 		mainGame = game;

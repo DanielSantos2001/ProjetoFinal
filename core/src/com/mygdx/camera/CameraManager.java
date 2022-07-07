@@ -12,11 +12,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 
 public class CameraManager {
-	private OrthographicCamera camera;
+	private final OrthographicCamera camera;
 	private TiledMap map;
 	private TiledMapRenderer renderer;
-	private AssetManager assetManager;
-	private OrthoCamController cameraController;
+	private final AssetManager assetManager;
+	private final OrthoCamController cameraController;
 
 	public CameraManager() {
 		camera = new OrthographicCamera(150,150);
@@ -50,4 +50,13 @@ public class CameraManager {
 	}
 
 	public TiledMap getMap() {return map;}
+
+	public void changeMap(String file){
+		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+		assetManager.load(file, TiledMap.class);
+		assetManager.finishLoading();
+
+		map = assetManager.get(file);
+		renderer = new OrthogonalTiledMapRenderer(map, 1f);
+	}
 }

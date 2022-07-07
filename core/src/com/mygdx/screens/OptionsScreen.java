@@ -31,7 +31,6 @@ public class OptionsScreen implements Screen{
 
 	@Override
 	public void render(float delta) {
-
 		mainGame.batch.begin();
 		Gdx.input.setInputProcessor(stage);
 		Gdx.gl.glClearColor(0,0,0,0);

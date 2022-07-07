@@ -5,234 +5,317 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class AnimationManager {
-	private Animation<TextureRegion> skeletonIdleAnimation;
- 	private Animation<TextureRegion> knightIdleAnimation;
-	private Animation<TextureRegion> knightWalkFrontAnimation;
-	private Animation<TextureRegion> knightWalkBackAnimation;
-	private Animation<TextureRegion> skeletonWalkBackAnimation;
-	private Animation<TextureRegion> knightWalkLeftAnimation;
-	private Animation<TextureRegion> knightWalkRightAnimation;
-	private Animation<TextureRegion> knightAttackFrontAnimation;
-	private Animation<TextureRegion> skeletonAttackFrontAnimation;
-	private Animation<TextureRegion> knightAttackBackAnimation;
-	private Animation<TextureRegion> skeletonAttackBackAnimation;
-	private Animation<TextureRegion> knightAttackRightAnimation;
-	private Animation<TextureRegion> skeletonAttackRightAnimation;
-	private Animation<TextureRegion> knightAttackLeftAnimation;
-	private Animation<TextureRegion> skeletonAttackLeftAnimation;
-	private Animation<TextureRegion> knightHurtAnimation;
-	private final TextureManager textureManager;
-	public AnimationManager() {
-		textureManager = new TextureManager();
-	}
+    private Animation<TextureRegion> skeletonDeathAnimation;
+    private Animation<TextureRegion> skeletonIdleAnimation;
+    private Animation<TextureRegion> knightIdleAnimation;
+    private Animation<TextureRegion> knightWalkFrontAnimation;
+    private Animation<TextureRegion> knightWalkBackAnimation;
+    private Animation<TextureRegion> skeletonWalkBackAnimation;
+    private Animation<TextureRegion> knightWalkLeftAnimation;
+    private Animation<TextureRegion> knightWalkRightAnimation;
+    private Animation<TextureRegion> knightAttackFrontAnimation;
+    private Animation<TextureRegion> skeletonAttackFrontAnimation;
+    private Animation<TextureRegion> knightAttackBackAnimation;
+    private Animation<TextureRegion> skeletonAttackBackAnimation;
+    private Animation<TextureRegion> knightAttackRightAnimation;
+    private Animation<TextureRegion> skeletonAttackRightAnimation;
+    private Animation<TextureRegion> knightAttackLeftAnimation;
+    private Animation<TextureRegion> skeletonAttackLeftAnimation;
+    private Animation<TextureRegion> knightHurtAnimation;
+    private Animation<TextureRegion> knightBlockBackAnimation;
+    private Animation<TextureRegion> knightBlockFrontAnimation;
+    private Animation<TextureRegion> knightBlockRightAnimation;
+    private Animation<TextureRegion> knightBlockLeftAnimation;
+    private final TextureManager textureManager;
+    private TextureRegion[][] tmp;
+    private TextureRegion[] idleFrames;
 
-	public void knightIdleAnimation() {
-		TextureRegion[][] tmp = TextureRegion.split(textureManager.getKnightIdleSheet(),textureManager.getKnightIdleSheet().getWidth()/2, textureManager.getKnightIdleSheet().getHeight());
+    public AnimationManager() {
+        textureManager = new TextureManager();
+    }
 
-		TextureRegion[] idleFrames = new TextureRegion[2];
+    public void knightIdleAnimation() {
+        tmp = TextureRegion.split(textureManager.getKnightIdleSheet(), textureManager.getKnightIdleSheet().getWidth() / 2, textureManager.getKnightIdleSheet().getHeight());
 
-		int index = 0;
+        idleFrames = new TextureRegion[2];
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<2;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        int index = 0;
 
-		knightIdleAnimation = new Animation<>(0.5f, idleFrames);
-	}
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 2; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-	public void knightHurtAnimation(){
-		TextureRegion[][] tmp = TextureRegion.split(textureManager.getKnightHurtSheet(),textureManager.getKnightHurtSheet().getWidth()/2, textureManager.getKnightHurtSheet().getHeight());
+        knightIdleAnimation = new Animation<>(0.5f, idleFrames);
+    }
 
-		TextureRegion[] idleFrames = new TextureRegion[2];
+    public void knightHurtAnimation() {
+        tmp = TextureRegion.split(textureManager.getKnightHurtSheet(), textureManager.getKnightHurtSheet().getWidth() / 2, textureManager.getKnightHurtSheet().getHeight());
 
-		int index = 0;
+        idleFrames = new TextureRegion[2];
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<2;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        int index = 0;
 
-		knightHurtAnimation = new Animation<>(0.5f, idleFrames);
-	}
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 2; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-	public void skeletonIdleAnimation() {
-		TextureRegion[][] tmp = TextureRegion.split(textureManager.getSkeletonIdleSheet(),textureManager.getSkeletonIdleSheet().getWidth()/2, textureManager.getSkeletonIdleSheet().getHeight());
+        knightHurtAnimation = new Animation<>(0.15f, idleFrames);
+    }
 
-		TextureRegion[] idleFrames = new TextureRegion[2];
+    public void skeletonIdleAnimation() {
+        tmp = TextureRegion.split(textureManager.getSkeletonIdleSheet(), textureManager.getSkeletonIdleSheet().getWidth() / 2, textureManager.getSkeletonIdleSheet().getHeight());
 
-		int index = 0;
+        idleFrames = new TextureRegion[2];
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<2;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        int index = 0;
 
-		skeletonIdleAnimation = new Animation<>(0.15f, idleFrames);
-	}
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 2; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-	public void skeletonWalkBackAnimation(Texture walkSheet){
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet,walkSheet.getWidth()/5, walkSheet.getHeight());
+        skeletonIdleAnimation = new Animation<>(0.5f, idleFrames);
+    }
 
-		TextureRegion[] idleFrames = new TextureRegion[5];
+    public void skeletonDeathAnimation() {
+        tmp = TextureRegion.split(textureManager.getSkeletonDeathSheet(), textureManager.getSkeletonDeathSheet().getWidth() / 4, textureManager.getSkeletonDeathSheet().getHeight());
 
-		int index = 0;
+        idleFrames = new TextureRegion[4];
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<5;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        int index = 0;
 
-		skeletonWalkBackAnimation = new Animation<>(0.15f, idleFrames);
-	}
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 4; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-	public void knightWalkAnimation(String walkState, Texture walkSheet) {
-		TextureRegion[][] tmp = TextureRegion.split(walkSheet,walkSheet.getWidth()/5, walkSheet.getHeight());
+        skeletonDeathAnimation = new Animation<>(0.5f,idleFrames);
 
-		TextureRegion[] idleFrames = new TextureRegion[5];
+    }
 
-		int index = 0;
+    public void skeletonWalkBackAnimation(Texture walkSheet) {
+        tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / 5, walkSheet.getHeight());
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<5;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        idleFrames = new TextureRegion[5];
 
-		switch(walkState) {
-		case "walkLeft":
-			knightWalkLeftAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		case "walkRight":
-			knightWalkRightAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		case "walkFront":
-			knightWalkFrontAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		case "walkBack":
-			knightWalkBackAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		default:
-		}
+        int index = 0;
 
-	}
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 5; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-	public void knightAttackAnimation(String attackState, Texture attackSheet) {
-		TextureRegion[][] tmp = TextureRegion.split(attackSheet,attackSheet.getWidth()/3, attackSheet.getHeight());
+        skeletonWalkBackAnimation = new Animation<>(0.15f, idleFrames);
+    }
 
-		TextureRegion[] idleFrames = new TextureRegion[3];
+    public void knightWalkAnimation(String walkState, Texture walkSheet) {
+        tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / 5, walkSheet.getHeight());
 
-		int index = 0;
+        idleFrames = new TextureRegion[5];
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<3 ;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        int index = 0;
 
-		switch(attackState) {
-		case "attackLeft":
-			knightAttackLeftAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		case "attackRight":
-			knightAttackRightAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		case "attackFront":
-			knightAttackFrontAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		case "attackBack":
-			knightAttackBackAnimation = new Animation<>(0.15f, idleFrames);
-			break;
-		default:
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 5; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-		}
-	}
+        switch (walkState) {
+            case "left":
+                knightWalkLeftAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "right":
+                knightWalkRightAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "front":
+                knightWalkFrontAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "back":
+                knightWalkBackAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            default:
+        }
 
-	public void skeletonAttackAnimation(String attackState, Texture attackSheet){
-		TextureRegion[][] tmp = TextureRegion.split(attackSheet,attackSheet.getWidth()/3, attackSheet.getHeight());
+    }
 
-		TextureRegion[] idleFrames = new TextureRegion[3];
+    public void knightBlockAnimation(String blockState, Texture blockSheet) {
+        tmp = TextureRegion.split(blockSheet, blockSheet.getWidth() / 5, blockSheet.getHeight());
 
-		int index = 0;
+        idleFrames = new TextureRegion[5];
 
-		for(int i = 0;i<1;i++) {
-			for(int j = 0;j<3 ;j++) {
-				idleFrames[index++] = tmp[i][j];
-			}
-		}
+        int index = 0;
 
-		switch(attackState) {
-			case "attackLeft":
-				skeletonAttackLeftAnimation = new Animation<>(0.5f, idleFrames);
-				break;
-			case "attackRight":
-				skeletonAttackRightAnimation = new Animation<>(0.5f, idleFrames);
-				break;
-			case "attackFront":
-				skeletonAttackFrontAnimation = new Animation<>(0.5f, idleFrames);
-				break;
-			case "attackBack":
-				skeletonAttackBackAnimation = new Animation<>(0.5f, idleFrames);
-				break;
-			default:
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 5; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-		}
-	}
+        switch (blockState) {
+            case "left":
+                knightBlockLeftAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "right":
+                knightBlockRightAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "front":
+                knightBlockFrontAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "back":
+                knightBlockBackAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            default:
+        }
 
-	public Animation<TextureRegion> getKnightIdleAnimation(){
-		return knightIdleAnimation;
-	}
-	public Animation<TextureRegion> getKnightHurtAnimation(){return knightHurtAnimation;}
-	public Animation<TextureRegion> getSkeletonIdleAnimation(){return  skeletonIdleAnimation;}
-	public Animation<TextureRegion> getSkeletonWalkBackAnimation(){return skeletonWalkBackAnimation;}
-	public Animation<TextureRegion> getKnightWalkAnimation(String walkAnimation){
+    }
 
-		switch(walkAnimation) {
-		case "walkRight":
-			return this.knightWalkRightAnimation;
-		case "walkLeft":
-			return this.knightWalkLeftAnimation;
-		case "walkBack":
-			return this.knightWalkBackAnimation;
-		default:
-			break;
-		}
+    public void knightAttackAnimation(String attackState, Texture attackSheet) {
+        tmp = TextureRegion.split(attackSheet, attackSheet.getWidth() / 3, attackSheet.getHeight());
 
-		return knightWalkFrontAnimation;
-	}
+        idleFrames = new TextureRegion[3];
 
-	public Animation<TextureRegion> getKnightAttackAnimation(String attackAnimation){
+        int index = 0;
 
-		switch(attackAnimation) {
-		case "attackRight":
-			return this.knightAttackRightAnimation;
-		case "attackLeft":
-			return this.knightAttackLeftAnimation;
-		case "attackBack":
-			return this.knightAttackBackAnimation;
-		default:
-			break;
-		}
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
 
-		return this.knightAttackFrontAnimation;
-	}
+        switch (attackState) {
+            case "left":
+                knightAttackLeftAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "right":
+                knightAttackRightAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "front":
+                knightAttackFrontAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "back":
+                knightAttackBackAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            default:
 
-	public Animation<TextureRegion> getSkeletonAttackAnimation(String attackAnimation){
-		switch(attackAnimation) {
-			case "attackRight":
-				return this.skeletonAttackRightAnimation;
-			case "attackLeft":
-				return this.skeletonAttackLeftAnimation;
-			case "attackBack":
-				return this.skeletonAttackBackAnimation;
-			default:
-				break;
-		}
+        }
+    }
 
-		return this.skeletonAttackFrontAnimation;
-	}
+    public void skeletonAttackAnimation(String attackState, Texture attackSheet) {
+        tmp = TextureRegion.split(attackSheet, attackSheet.getWidth() / 3, attackSheet.getHeight());
+
+        idleFrames = new TextureRegion[3];
+
+        int index = 0;
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 3; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        switch (attackState) {
+            case "left":
+                skeletonAttackLeftAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "right":
+                skeletonAttackRightAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "front":
+                skeletonAttackFrontAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            case "back":
+                skeletonAttackBackAnimation = new Animation<>(0.15f, idleFrames);
+                break;
+            default:
+
+        }
+    }
+
+    public Animation<TextureRegion> getSkeletonDeathAnimation(){return skeletonDeathAnimation;}
+    public Animation<TextureRegion> getKnightIdleAnimation() {
+        return knightIdleAnimation;
+    }
+
+    public Animation<TextureRegion> getKnightHurtAnimation() {
+        return knightHurtAnimation;
+    }
+
+    public Animation<TextureRegion> getSkeletonIdleAnimation() {
+        return skeletonIdleAnimation;
+    }
+
+    public Animation<TextureRegion> getSkeletonWalkBackAnimation() {
+        return skeletonWalkBackAnimation;
+    }
+
+    public Animation<TextureRegion> getKnightWalkAnimation(String walkAnimation) {
+
+        switch (walkAnimation) {
+            case "right":
+                return this.knightWalkRightAnimation;
+            case "left":
+                return this.knightWalkLeftAnimation;
+            case "back":
+                return this.knightWalkBackAnimation;
+            default:
+                break;
+        }
+
+        return knightWalkFrontAnimation;
+    }
+
+    public Animation<TextureRegion> getKnightAttackAnimation(String attackAnimation) {
+
+        switch (attackAnimation) {
+            case "right":
+                return this.knightAttackRightAnimation;
+            case "left":
+                return this.knightAttackLeftAnimation;
+            case "back":
+                return this.knightAttackBackAnimation;
+            default:
+                break;
+        }
+
+        return this.knightAttackFrontAnimation;
+    }
+
+    public Animation<TextureRegion> getKnightBlockAnimation(String blockAnimation) {
+
+        switch (blockAnimation) {
+            case "right":
+                return this.knightBlockRightAnimation;
+            case "left":
+                return this.knightBlockLeftAnimation;
+            case "back":
+                return this.knightBlockBackAnimation;
+            default:
+                break;
+        }
+
+        return this.knightBlockFrontAnimation;
+    }
+
+    public Animation<TextureRegion> getSkeletonAttackAnimation(String attackAnimation) {
+        switch (attackAnimation) {
+            case "right":
+                return this.skeletonAttackRightAnimation;
+            case "left":
+                return this.skeletonAttackLeftAnimation;
+            case "back":
+                return this.skeletonAttackBackAnimation;
+            default:
+                break;
+        }
+
+        return this.skeletonAttackFrontAnimation;
+    }
 }

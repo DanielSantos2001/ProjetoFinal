@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.animations.AnimationManager;
 import com.mygdx.animations.TextureManager;
-import com.mygdx.screens.MainGameScreen;
 
-import static com.mygdx.screens.MainGameScreen.stateTime;
+import static com.mygdx.screens.MainGameScreen.*;
 
 public class Skeleton extends GameEntity {
     private final Rectangle skeletonBounds;
@@ -20,16 +19,17 @@ public class Skeleton extends GameEntity {
         this.speed = 0.5f;
         animationManager = new AnimationManager();
         textureManager = new TextureManager();
+
     }
 
     @Override
     public void create() {
         animationManager.skeletonIdleAnimation();
         animationManager.skeletonWalkBackAnimation(textureManager.getSkeletonWalkBackSheet());
-        animationManager.skeletonAttackAnimation("attackFront", textureManager.getSkeletonAttackSheet("attackFront"));
-        animationManager.skeletonAttackAnimation("attackBack", textureManager.getSkeletonAttackSheet("attackBack"));
-        animationManager.skeletonAttackAnimation("attackLeft", textureManager.getSkeletonAttackSheet("attackLeft"));
-        animationManager.skeletonAttackAnimation("attackRight", textureManager.getSkeletonAttackSheet("attackRight"));
+        animationManager.skeletonAttackAnimation("front", textureManager.getSkeletonAttackSheet("front"));
+        animationManager.skeletonAttackAnimation("back", textureManager.getSkeletonAttackSheet("back"));
+        animationManager.skeletonAttackAnimation("left", textureManager.getSkeletonAttackSheet("left"));
+        animationManager.skeletonAttackAnimation("right", textureManager.getSkeletonAttackSheet("right"));
     }
 
     @Override
@@ -79,11 +79,13 @@ public class Skeleton extends GameEntity {
             MoveToX = (int) knightX;
             MoveToY = (int) knightY;
 
+            stage.addActor(skeletonHealthBar);
 
         } else {
             MoveToX = (int) 855.60596f;
             MoveToY = (int) 977.9982f;
 
+            skeletonHealthBar.remove();
             animationManager.skeletonWalkBackAnimation(textureManager.getSkeletonWalkBackSheet());
             currentSkeletonFrame = animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime, true);
         }
@@ -105,19 +107,7 @@ public class Skeleton extends GameEntity {
         this.setSkeletonY((float) ((this.speed) * Math.sin(angle)));
     }
 
-    public void verifySkeletonAttackState(String attackState) {
-        switch (attackState) {
-            case "attackLeft":
-                currentSkeletonFrame = animationManager.getSkeletonAttackAnimation("attackLeft").getKeyFrame(stateTime, true);
-                break;
-            case "attackRight":
-                currentSkeletonFrame = animationManager.getSkeletonAttackAnimation("attackRight").getKeyFrame(stateTime, true);
-                break;
-            case "attackBack":
-                currentSkeletonFrame = animationManager.getSkeletonAttackAnimation("attackBack").getKeyFrame(stateTime, true);
-                break;
-            default:
-                currentSkeletonFrame = animationManager.getSkeletonAttackAnimation("attackFront").getKeyFrame(stateTime, true);
-        }
+    public void verifySkeletonAttackState(String state) {
+        currentSkeletonFrame = animationManager.getSkeletonAttackAnimation(state).getKeyFrame(stateTime, true);
     }
 }

@@ -5,35 +5,35 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.animations.AnimationManager;
 import com.mygdx.animations.TextureManager;
 import com.mygdx.collisions.MapCollisions;
 import com.mygdx.game.HealthBar;
 import com.mygdx.game.KnightsOath;
 import com.mygdx.screens.MainGameScreen;
-import com.mygdx.screens.MainMenuScreen;
 import com.mygdx.screens.PauseMenuScreen;
 
-import static com.mygdx.screens.MainGameScreen.stateTime;
+import static com.mygdx.models.Skeleton.currentSkeletonFrame;
+import static com.mygdx.screens.MainGameScreen.*;
 
 public class Knight extends GameEntity {
     private final KnightsOath mainGame;
-    private Rectangle knightBounds;
-    private TextureManager textureManager;
-    private String attackState;
+    private final Rectangle knightBounds;
+    private final TextureManager textureManager;
+    private String state;
     private MapCollisions mapCollisions;
-    private AnimationManager animationManager;
-    private TextureRegion currentKnightFrame;
-    private Skeleton skeleton;
-    private MainGameScreen mainGameScreen;
-
+    private final HealthBar healthBar;
+    private final AnimationManager animationManager;
+    public static TextureRegion currentKnightFrame;
+    private final Skeleton skeleton;
+    private final MainGameScreen mainGameScreen;
     public Knight(float knightWidth, float knightHeight, float knightX, float knightY, KnightsOath mainGame, MainGameScreen mainGameScreen) {
         super(knightWidth, knightHeight, knightX, knightY);
         animationManager = new AnimationManager();
         textureManager = new TextureManager();
         knightBounds = new Rectangle(knightX, knightY, knightWidth, knightHeight);
         skeleton = new Skeleton(25, 25, 856, 977);
+        healthBar = new HealthBar(200, 100);
         this.speed = 80f;
         this.mainGame = mainGame;
         this.mainGameScreen = mainGameScreen;
@@ -43,9 +43,11 @@ public class Knight extends GameEntity {
     public void create() {
         animationManager.knightIdleAnimation();
         animationManager.knightHurtAnimation();
-        animationManager.knightWalkAnimation("walkFront", textureManager.getKnightWalkSheet("walkFront"));
-        animationManager.knightAttackAnimation("attackFront", textureManager.getKnightAttackSheet("attackFront"));
-        animationManager.skeletonAttackAnimation("attackFront", textureManager.getSkeletonAttackSheet("attackFront"));
+        animationManager.skeletonDeathAnimation();
+        animationManager.knightWalkAnimation("front", textureManager.getKnightWalkSheet("front"));
+        animationManager.knightBlockAnimation("front", textureManager.getKnightBlockSheet("front"));
+        animationManager.knightAttackAnimation("front", textureManager.getKnightAttackSheet("front"));
+        animationManager.skeletonAttackAnimation("front", textureManager.getSkeletonAttackSheet("front"));
         mapCollisions = new MapCollisions(this.mainGameScreen.getCameraManager());
     }
 
@@ -71,28 +73,36 @@ public class Knight extends GameEntity {
         this.playerMovement();
         skeleton.skeletonFollowPlayer(this.getKnightX(), this.getKnightY(), stateTime);
 
-        if (MainGameScreen.doAnimation) {
-            skeleton.verifySkeletonAttackState(this.getAttackState());
-            currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime, true);
-        }
+        this.mapTransitions();
 
         this.mainGameScreen.getCameraManager().getCamera().update();
         this.mainGameScreen.getCameraManager().getMapRenderer().setView(this.mainGameScreen.getCameraManager().getCamera());
         this.mainGameScreen.getCameraManager().getMapRenderer().render();
         mainGame.batch.setProjectionMatrix(this.mainGameScreen.getCameraManager().getCamera().combined);
-        mainGame.batch.begin();
-
         mainGame.batch.draw(currentKnightFrame, this.getKnightX(), this.getKnightY(), this.getKnightWidth(), this.getKnightHeight());
-        mainGame.batch.draw(Skeleton.currentSkeletonFrame, skeleton.getSkeletonX(), skeleton.getSkeletonY(), skeleton.getSkeletonWidth(), skeleton.getSkeletonHeight());
-        mainGame.batch.end();
+
+        if (!isDead) {
+            if (doAnimation) {
+                skeleton.verifySkeletonAttackState(this.getState());
+                currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime, true);
+            }
+
+            mainGame.batch.draw(currentSkeletonFrame, skeleton.getSkeletonX(), skeleton.getSkeletonY(), skeleton.getSkeletonWidth(), skeleton.getSkeletonHeight());
+        } else {
+            skeletonHealthBar.remove();
+        }
+    }
+
+    public HealthBar getHealthBar() {
+        return this.healthBar;
     }
 
     public Skeleton getSkeleton() {
         return this.skeleton;
     }
 
-    public String getAttackState() {
-        return this.attackState;
+    public String getState() {
+        return this.state;
     }
 
     public float getKnightSpeed() {
@@ -138,7 +148,7 @@ public class Knight extends GameEntity {
     }
 
     private void playerMovement() {
-        this.attackState = "attackIdle";
+        this.state = "idle";
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
 
@@ -146,15 +156,9 @@ public class Knight extends GameEntity {
                 this.update(this.getKnightX(), this.getKnightSpeed() * Gdx.graphics.getDeltaTime(), true, false);
             }
 
-            animationManager.knightWalkAnimation("walkBack", textureManager.getKnightWalkSheet("walkBack"));
+            this.state = "back";
+            initializeAnimations();
 
-            animationManager.knightAttackAnimation("attackBack", textureManager.getKnightAttackSheet("attackBack"));
-
-            animationManager.skeletonAttackAnimation("attackBack", textureManager.getSkeletonAttackSheet("attackBack"));
-
-            currentKnightFrame = animationManager.getKnightWalkAnimation("walkBack").getKeyFrame(stateTime, true);
-
-            this.attackState = "attackBack";
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
@@ -163,15 +167,9 @@ public class Knight extends GameEntity {
                 this.update(this.getKnightX(), this.getKnightSpeed() * Gdx.graphics.getDeltaTime(), false, false);
             }
 
-            animationManager.knightWalkAnimation("walkFront", textureManager.getKnightWalkSheet("walkFront"));
 
-            animationManager.knightAttackAnimation("attackFront", textureManager.getKnightAttackSheet("attackFront"));
-
-            animationManager.skeletonAttackAnimation("attackFront", textureManager.getSkeletonAttackSheet("attackFront"));
-
-            currentKnightFrame = animationManager.getKnightWalkAnimation("walkFront").getKeyFrame(stateTime, true);
-
-            this.attackState = "attackFront";
+            this.state = "front";
+            initializeAnimations();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -180,15 +178,9 @@ public class Knight extends GameEntity {
                 this.update(this.getKnightSpeed() * Gdx.graphics.getDeltaTime(), this.getKnightY(), false, true);
             }
 
-            animationManager.knightWalkAnimation("walkLeft", textureManager.getKnightWalkSheet("walkLeft"));
+            this.state = "left";
+            initializeAnimations();
 
-            animationManager.knightAttackAnimation("attackLeft", textureManager.getKnightAttackSheet("attackLeft"));
-
-            animationManager.skeletonAttackAnimation("attackLeft", textureManager.getSkeletonAttackSheet("attackLeft"));
-
-            currentKnightFrame = animationManager.getKnightWalkAnimation("walkLeft").getKeyFrame(stateTime, true);
-
-            this.attackState = "attackLeft";
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -197,19 +189,16 @@ public class Knight extends GameEntity {
                 this.update(this.getKnightSpeed() * Gdx.graphics.getDeltaTime(), this.getKnightY(), true, true);
             }
 
-            animationManager.knightWalkAnimation("walkRight", textureManager.getKnightWalkSheet("walkRight"));
-
-            animationManager.knightAttackAnimation("attackRight", textureManager.getKnightAttackSheet("attackRight"));
-
-            animationManager.skeletonAttackAnimation("attackRight", textureManager.getSkeletonAttackSheet("attackRight"));
-
-            currentKnightFrame = animationManager.getKnightWalkAnimation("walkRight").getKeyFrame(stateTime, true);
-
-            this.attackState = "attackRight";
+            this.state = "right";
+            initializeAnimations();
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            this.verifyKnightAttackState();
+            currentKnightFrame = animationManager.getKnightAttackAnimation(this.state).getKeyFrame(stateTime, true);
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+            currentKnightFrame = animationManager.getKnightBlockAnimation(this.state).getKeyFrame(stateTime, true);
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -217,19 +206,48 @@ public class Knight extends GameEntity {
         }
     }
 
-    private void verifyKnightAttackState() {
-        switch (this.attackState) {
-            case "attackLeft":
-                currentKnightFrame = animationManager.getKnightAttackAnimation("attackLeft").getKeyFrame(stateTime, true);
-                break;
-            case "attackRight":
-                currentKnightFrame = animationManager.getKnightAttackAnimation("attackRight").getKeyFrame(stateTime, true);
-                break;
-            case "attackBack":
-                currentKnightFrame = animationManager.getKnightAttackAnimation("attackBack").getKeyFrame(stateTime, true);
-                break;
-            default:
-                currentKnightFrame = animationManager.getKnightAttackAnimation("attackFront").getKeyFrame(stateTime, true);
+    private void initializeAnimations() {
+        animationManager.knightWalkAnimation(this.state, textureManager.getKnightWalkSheet(this.state));
+        animationManager.knightAttackAnimation(this.state, textureManager.getKnightAttackSheet(this.state));
+        animationManager.skeletonAttackAnimation(this.state, textureManager.getSkeletonAttackSheet(this.state));
+        animationManager.knightBlockAnimation(this.state, textureManager.getKnightBlockSheet(this.state));
+        currentKnightFrame = animationManager.getKnightWalkAnimation(this.state).getKeyFrame(stateTime, true);
+    }
+
+    private void mapTransitions() {
+
+        if (mapCollisions.tpCastleUp(this.getKnightX(), this.getKnightY())) {
+            knightBounds.x = 500;
+            knightBounds.y = 1090;
+        }
+
+        if (mapCollisions.tpCastleDown(this.getKnightX(), this.getKnightY())) {
+            knightBounds.x = 500;
+            knightBounds.y = 1200;
+        }
+
+        if (mapCollisions.tpHouseUp(this.getKnightX(), this.getKnightY())) {
+            this.mainGameScreen.getCameraManager().changeMap("Maps/map1.tmx");
+            knightBounds.x = 500;
+            knightBounds.y = 300;
+        }
+
+        if (mapCollisions.tpHouseDown(this.getKnightX(), this.getKnightY())) {
+            this.mainGameScreen.getCameraManager().changeMap("Maps/map3.tmx");
+            knightBounds.x = 100;
+            knightBounds.y = 30;
+        }
+
+        if (mapCollisions.tpForestUp(this.getKnightX(), this.getKnightY())) {
+            this.mainGameScreen.getCameraManager().changeMap("Maps/map2.tmx");
+            knightBounds.x = 500;
+            knightBounds.y = 1370;
+        }
+
+        if (mapCollisions.tpForestDown(this.getKnightX(), this.getKnightY())) {
+            this.mainGameScreen.getCameraManager().changeMap("Maps/map1.tmx");
+            knightBounds.x = 500;
+            knightBounds.y = 20;
         }
     }
 }

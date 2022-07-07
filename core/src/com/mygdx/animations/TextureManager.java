@@ -3,26 +3,32 @@ package com.mygdx.animations;
 import com.badlogic.gdx.graphics.Texture;
 
 public class TextureManager {
-    private Texture knightIdleSheet;
-    private Texture skeletonIdleSheet;
-    private Texture knightWalkFrontSheet;
-    private Texture knightWalkBackSheet;
-    private Texture skeletonWalkBackSheet;
-    private Texture knightWalkLeftSheet;
-    private Texture knightWalkRightSheet;
-    private Texture knightAttackFrontSheet;
-    private Texture skeletonAttackFrontSheet;
-    private Texture knightAttackBackSheet;
-    private Texture skeletonAttackBackSheet;
-    private Texture knightAttackRightSheet;
-    private Texture skeletonAttackRightSheet;
-    private Texture knightAttackLeftSheet;
-    private Texture skeletonAttackLeftSheet;
-    private Texture knightHurtSheet;
+    private final Texture knightIdleSheet;
+    private final Texture skeletonDeathSheet;
+    private final Texture skeletonIdleSheet;
+    private final Texture knightWalkFrontSheet;
+    private final Texture knightWalkBackSheet;
+    private final Texture skeletonWalkBackSheet;
+    private final Texture knightWalkLeftSheet;
+    private final Texture knightWalkRightSheet;
+    private final Texture knightAttackFrontSheet;
+    private final Texture skeletonAttackFrontSheet;
+    private final Texture knightAttackBackSheet;
+    private final Texture skeletonAttackBackSheet;
+    private final Texture knightAttackRightSheet;
+    private final Texture skeletonAttackRightSheet;
+    private final Texture knightAttackLeftSheet;
+    private final Texture skeletonAttackLeftSheet;
+    private final Texture knightHurtSheet;
+    private final Texture knightBlockBackSheet;
+    private final Texture knightBlockFrontSheet;
+    private final Texture knightBlockLeftSheet;
+    private final Texture knightBlockRightSheet;
 
     public TextureManager(){
         this.knightIdleSheet = new Texture("Textures/Char/knightIdle.png");
         this.skeletonIdleSheet = new Texture("Textures/Enemy/Skeleton/skeletonIdle.png");
+        this.skeletonDeathSheet = new Texture("Textures/Enemy/Skeleton/skeletonDeath.png");
         this.knightWalkFrontSheet =  new Texture("Textures/Char/knightWalkFront.png");
         this.knightWalkBackSheet =  new Texture("Textures/Char/knightWalkBack.png");
         this.skeletonWalkBackSheet = new Texture("Textures/Enemy/Skeleton/skeletonWalkBack.png");
@@ -37,8 +43,13 @@ public class TextureManager {
         this.knightAttackRightSheet = new Texture("Textures/Char/knightAttackRight.png");
         this.skeletonAttackRightSheet = new Texture("Textures/Enemy/Skeleton/skeletonAttackRight.png");
         this.knightHurtSheet = new Texture("Textures/Char/knightHurt.png");
+        this.knightBlockBackSheet = new Texture("Textures/Char/knightBlockBack.png");
+        this.knightBlockFrontSheet = new Texture("Textures/Char/knightBlockFront.png");
+        this.knightBlockLeftSheet = new Texture("Textures/Char/knightBlockLeft.png");
+        this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getSkeletonDeathSheet(){return this.skeletonDeathSheet;}
     public Texture getKnightIdleSheet() {
         return this.knightIdleSheet;
     }
@@ -49,11 +60,11 @@ public class TextureManager {
     public Texture getSkeletonWalkBackSheet(){return  this.skeletonWalkBackSheet; }
     public Texture getKnightWalkSheet(String walkSheet) {
         switch(walkSheet) {
-            case "walkRight":
+            case "right":
                 return this.knightWalkRightSheet;
-            case "walkLeft":
+            case "left":
                 return this.knightWalkLeftSheet;
-            case "walkBack":
+            case "back":
                 return this.knightWalkBackSheet;
             default:
                 break;
@@ -64,11 +75,11 @@ public class TextureManager {
 
     public Texture getKnightAttackSheet(String attackSheet) {
         switch(attackSheet) {
-            case "attackRight":
+            case "right":
                 return this.knightAttackRightSheet;
-            case "attackLeft":
+            case "left":
                 return this.knightAttackLeftSheet;
-            case "attackBack":
+            case "back":
                 return this.knightAttackBackSheet;
             default:
                 break;
@@ -77,13 +88,28 @@ public class TextureManager {
         return this.knightAttackFrontSheet;
     }
 
+    public Texture getKnightBlockSheet(String blockSheet){
+        switch (blockSheet){
+            case "right":
+                return this.knightBlockRightSheet;
+            case "left":
+                return this.knightBlockLeftSheet;
+            case "back":
+                return this.knightBlockBackSheet;
+            default:
+                break;
+        }
+
+        return this.knightBlockFrontSheet;
+    }
+
     public Texture getSkeletonAttackSheet(String attackSheet) {
         switch(attackSheet) {
-            case "attackRight":
+            case "right":
                 return this.skeletonAttackRightSheet;
-            case "attackLeft":
+            case "left":
                 return this.skeletonAttackLeftSheet;
-            case "attackBack":
+            case "back":
                 return this.skeletonAttackBackSheet;
             default:
                 break;

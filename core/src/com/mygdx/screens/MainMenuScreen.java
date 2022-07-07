@@ -13,11 +13,11 @@ import com.mygdx.game.KnightsOath;
 import com.mygdx.game.MusicManager;
 
 public class MainMenuScreen implements Screen {
-	private KnightsOath mainGame;
-	private Stage stage;
-	private MusicManager musicManager;
-	private ButtonManager buttonManager;
-	
+	private final KnightsOath mainGame;
+	private final Stage stage;
+	private final MusicManager musicManager;
+	private final ButtonManager buttonManager;
+
 	public MainMenuScreen(KnightsOath game) {
 		mainGame = game;
 		stage = new Stage(new ScreenViewport());
@@ -27,13 +27,8 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void show() {
-		
-		if(musicManager.getMusic1().getVolume() == 0) {
-			buttonManager.getNoMusicButton().setVisible(true);
-		}else {
-			buttonManager.getNoMusicButton().setVisible(false);
-		}
-		
+
+		buttonManager.getNoMusicButton().setVisible(musicManager.getMusic1().getVolume() == 0);
 		musicManager.getMusic1().play();
 		
 		this.addStageActors();
@@ -52,36 +47,30 @@ public class MainMenuScreen implements Screen {
 		stage.act();
 		stage.draw();
 		mainGame.batch.end();
-
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
 		musicManager.getMusic1().dispose();
 		musicManager.getMusic2().dispose();
 		stage.dispose();
