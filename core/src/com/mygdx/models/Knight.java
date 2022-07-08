@@ -35,7 +35,7 @@ public class Knight extends GameEntity {
         textureManager = new TextureManager();
         knightBounds = new Rectangle(knightX, knightY, knightWidth, knightHeight);
         skeleton = new Skeleton(25, 25, 856, 977);
-        healthBar = new HealthBar(200, 100);
+        healthBar = new HealthBar(142, 20);
         this.speed = 80f;
         this.mainGame = mainGame;
         this.mainGameScreen = mainGameScreen;
@@ -81,7 +81,6 @@ public class Knight extends GameEntity {
         this.mainGameScreen.getCameraManager().getMapRenderer().setView(this.mainGameScreen.getCameraManager().getCamera());
         this.mainGameScreen.getCameraManager().getMapRenderer().render();
         mainGame.batch.setProjectionMatrix(this.mainGameScreen.getCameraManager().getCamera().combined);
-        mainGame.batch.draw(currentKnightFrame, this.getKnightX(), this.getKnightY(), this.getKnightWidth(), this.getKnightHeight());
 
         if (!isDead) {
             if (doAnimation) {
@@ -93,6 +92,9 @@ public class Knight extends GameEntity {
         } else {
             skeletonHealthBar.remove();
         }
+
+        mainGame.batch.draw(currentKnightFrame, this.getKnightX()-15, this.getKnightY()-5, this.getKnightWidth(), this.getKnightHeight());
+
     }
 
     public HealthBar getHealthBar() {
@@ -151,9 +153,6 @@ public class Knight extends GameEntity {
 
     private void playerMovement() {
         this.state = "idle";
-
-        System.out.println("x" + this.getKnightX());
-        System.out.println("y" + this.getKnightY());
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
 
@@ -222,13 +221,13 @@ public class Knight extends GameEntity {
     private void mapTransitions() {
 
         if (mapCollisions.tpCastleUp(this.getKnightX(), this.getKnightY())) {
-            knightBounds.x = 500;
+            knightBounds.x = 515;
             knightBounds.y = 1090;
             mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "castleUp", mainGameScreen, knightBounds));
         }
 
         if (mapCollisions.tpCastleDown(this.getKnightX(), this.getKnightY())) {
-            knightBounds.x = 500;
+            knightBounds.x = 515;
             knightBounds.y = 1200;
             mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "castleDown", mainGameScreen, knightBounds));
         }

@@ -28,14 +28,32 @@ public class AnimationManager {
     private Animation<TextureRegion> knightBlockLeftAnimation;
     private Animation<TextureRegion> loadingAnimation;
     private Animation<TextureRegion> executionerIdleAnimation;
+    private Animation<TextureRegion> moveUpAnimation;
+    private Animation<TextureRegion> moveDownAnimation;
+    private Animation<TextureRegion> moveLeftAnimation;
+    private Animation<TextureRegion> moveRightAnimation;
     private final TextureManager textureManager;
     private TextureRegion[][] tmp;
     private TextureRegion[] idleFrames;
-
     public AnimationManager() {
         textureManager = new TextureManager();
     }
 
+    public void moveRightAnimation(){
+        tmp = TextureRegion.split(textureManager.getMoveRightSheet(),textureManager.getMoveRightSheet().getWidth()/5,textureManager.getMoveRightSheet().getHeight()/8);
+
+        idleFrames = new TextureRegion[40];
+
+        int index = 0;
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 5; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        moveRightAnimation = new Animation<>(0.075f, idleFrames);
+    }
     public void loadingAnimation(){
         tmp = TextureRegion.split(textureManager.getLoadingSheet(),textureManager.getLoadingSheet().getWidth()/5,textureManager.getLoadingSheet().getHeight()/5);
 
@@ -272,6 +290,7 @@ public class AnimationManager {
         }
     }
 
+    public Animation<TextureRegion> getMoveRightAnimation(){return this.moveRightAnimation;}
     public Animation<TextureRegion> getExecutionerIdleAnimation(){return this.executionerIdleAnimation;}
     public Animation<TextureRegion> getLoadingAnimation(){return this.loadingAnimation;}
     public Animation<TextureRegion> getSkeletonDeathAnimation(){return skeletonDeathAnimation;}

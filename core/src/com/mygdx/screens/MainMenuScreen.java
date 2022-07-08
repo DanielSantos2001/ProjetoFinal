@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 import com.mygdx.game.MusicManager;
@@ -20,7 +19,7 @@ public class MainMenuScreen implements Screen {
 
 	public MainMenuScreen(KnightsOath game) {
 		mainGame = game;
-		stage = new Stage(new ScreenViewport());
+		stage = new Stage();
 		musicManager = MusicManager.getInstance();
 		buttonManager = ButtonManager.getInstance();
 	}
@@ -71,9 +70,6 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		musicManager.getMusic1().dispose();
-		musicManager.getMusic2().dispose();
-		stage.dispose();
 	}
 	
 	private void addStageActors() {

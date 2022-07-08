@@ -1,10 +1,10 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.animations.AnimationManager;
-import com.mygdx.animations.TextureManager;
 import com.mygdx.camera.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -13,11 +13,9 @@ import com.mygdx.game.KnightsOath;
 import com.mygdx.models.Knight;
 
 
-
 public class MainGameScreen implements Screen {
     private final KnightsOath mainGame;
     private final CameraManager cameraManager;
-    private final TextureManager textureManager;
     private final AnimationManager animationManager;
     public static Knight knight;
     public static float stateTime;
@@ -27,24 +25,29 @@ public class MainGameScreen implements Screen {
     private double knightAttackTimer = 0;
     public static boolean doAnimation = false;
     public static boolean isDead = false;
+    private final Image hudImage;
+    public static Image skeletonHudImage;
 
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
         cameraManager = new CameraManager();
-        textureManager = new TextureManager();
         animationManager = new AnimationManager();
-        knight = new Knight(25,25,500,1250,mainGame,this);
+        knight = new Knight(25, 25, 515, 1250, mainGame, this);
+        Texture hudTexture = new Texture("Textures/Char/HUD.png");
+        hudImage = new Image(hudTexture);
+        Texture skeletonHudTexture = new Texture("Textures/Enemy/Skeleton/hudSkeleton.png");
+        skeletonHudImage = new Image(skeletonHudTexture);
     }
 
     @Override
     public void show() {
         animationManager.knightHurtAnimation();
+
         cameraManager.mapRendering();
+
         stage = new Stage();
-        skeletonHealthBar = new HealthBar(100, 10);
-        skeletonHealthBar.setPosition(540, 400);
-        knight.getHealthBar().setPosition(0, Gdx.graphics.getHeight() - 20);
-        stage.addActor(knight.getHealthBar());
+
+        setHUD();
     }
 
     @Override
@@ -54,7 +57,7 @@ public class MainGameScreen implements Screen {
         knight.create();
         knight.render(delta);
 
-        if(!isDead){
+        if (!isDead) {
             invincibilityTime(delta);
             knightCanAttack(delta);
         }
@@ -84,38 +87,36 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void dispose() {
-        textureManager.getKnightIdleSheet().dispose();
-        textureManager.getSkeletonIdleSheet().dispose();
-        textureManager.getKnightHurtSheet().dispose();
-        textureManager.getKnightWalkSheet("back").dispose();
-        textureManager.getKnightWalkSheet("front").dispose();
-        textureManager.getKnightWalkSheet("right").dispose();
-        textureManager.getKnightWalkSheet("left").dispose();
-        textureManager.getKnightAttackSheet("front").dispose();
-        textureManager.getKnightAttackSheet("back").dispose();
-        textureManager.getKnightAttackSheet("left").dispose();
-        textureManager.getKnightAttackSheet("right").dispose();
-        textureManager.getSkeletonAttackSheet("front").dispose();
-        textureManager.getSkeletonAttackSheet("back").dispose();
-        textureManager.getSkeletonAttackSheet("left").dispose();
-        textureManager.getSkeletonAttackSheet("right").dispose();
-        textureManager.getKnightBlockSheet("left").dispose();
-        textureManager.getKnightBlockSheet("right").dispose();
-        textureManager.getKnightBlockSheet("back").dispose();
-        textureManager.getKnightBlockSheet("front").dispose();
-        mainGame.batch.dispose();
     }
 
     public CameraManager getCameraManager() {
         return this.cameraManager;
     }
 
+    private void setHUD(){
+        skeletonHealthBar = new HealthBar(149, 14);
+        skeletonHealthBar.setPosition(488, 466);
+
+        skeletonHudImage.setPosition(399, 378);
+        skeletonHudImage.setWidth(270);
+        skeletonHudImage.setHeight(120);
+
+        hudImage.setPosition(0, Gdx.graphics.getHeight() - 109);
+        hudImage.setWidth(250);
+        hudImage.setHeight(120);
+
+        knight.getHealthBar().setPosition(80, Gdx.graphics.getHeight() - 25);
+
+        stage.addActor(knight.getHealthBar());
+        stage.addActor(hudImage);
+    }
     private void invincibilityTime(float delta) {
         if (skeletonAttackTimer > 0) {
             skeletonAttackTimer -= delta;
         } else if (skeletonAttackTimer < 0) skeletonAttackTimer = 0;
 
         doAnimation = false;
+
         if (skeletonAttackTimer == 0 && knight.getKnightBounds().overlaps(knight.getSkeleton().getSkeletonBounds())) {
             doAnimation = true;
 
@@ -126,12 +127,11 @@ public class MainGameScreen implements Screen {
             }
 
             if (knight.getHealthBar().getValue() == 0.0f) {
-                this.dispose();
-                mainGame.setScreen(new MainMenuScreen(mainGame));
+                mainGame.setScreen(new DeathScreen(mainGame, "skeleton"));
 
             }
 
-            skeletonAttackTimer = 3.0;
+            skeletonAttackTimer = 2.0;
         }
 
     }
@@ -148,6 +148,9 @@ public class MainGameScreen implements Screen {
 
             if (skeletonHealthBar.getValue() == 0.0f) {
                 isDead = true;
+
+                skeletonHudImage.setVisible(false);
+                skeletonHealthBar.remove();
             }
 
             knightAttackTimer = 1.0;

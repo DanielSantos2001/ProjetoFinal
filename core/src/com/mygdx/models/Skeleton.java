@@ -1,7 +1,9 @@
 package com.mygdx.models;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.animations.AnimationManager;
 import com.mygdx.animations.TextureManager;
 
@@ -19,7 +21,6 @@ public class Skeleton extends GameEntity {
         this.speed = 0.5f;
         animationManager = new AnimationManager();
         textureManager = new TextureManager();
-
     }
 
     @Override
@@ -79,13 +80,16 @@ public class Skeleton extends GameEntity {
             MoveToX = (int) knightX;
             MoveToY = (int) knightY;
 
+            stage.addActor(skeletonHudImage);
             stage.addActor(skeletonHealthBar);
 
         } else {
             MoveToX = (int) 855.60596f;
             MoveToY = (int) 977.9982f;
 
+            skeletonHudImage.remove();
             skeletonHealthBar.remove();
+
             animationManager.skeletonWalkBackAnimation(textureManager.getSkeletonWalkBackSheet());
             currentSkeletonFrame = animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime, true);
         }

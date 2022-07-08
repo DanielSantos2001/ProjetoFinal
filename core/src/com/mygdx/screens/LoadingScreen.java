@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.animations.AnimationManager;
 import com.mygdx.game.KnightsOath;
-import jdk.tools.jaotc.Main;
-
 
 public class LoadingScreen implements Screen {
     private final KnightsOath mainGame;
@@ -17,10 +15,10 @@ public class LoadingScreen implements Screen {
     private float elapsedTime;
     private final AnimationManager animationManager;
     private TextureRegion currentLoadingFrame;
-    private Texture loadingTexture;
-    private String mapToLoad;
-    private MainGameScreen mainGameScreen;
-    private Rectangle knightBounds;
+    private final Texture loadingTexture;
+    private final String mapToLoad;
+    private final MainGameScreen mainGameScreen;
+    private final Rectangle knightBounds;
 
     public LoadingScreen(KnightsOath game, Screen parent, String mapToLoad, MainGameScreen mainGameScreen, Rectangle knightBounds){
         mainGame = game;
@@ -59,27 +57,28 @@ public class LoadingScreen implements Screen {
     private void setCoordinates(){
         switch (this.mapToLoad){
             case "castleDown":
-                mainGame.batch.draw(loadingTexture,445,1090,105,40);
-                mainGame.batch.draw(currentLoadingFrame,530,1103,14,17);
+                mainGame.batch.draw(loadingTexture,460,1090,105,40);
+                mainGame.batch.draw(currentLoadingFrame,545,1103,14,17);
                 break;
             case "castleUp":
-                mainGame.batch.draw(loadingTexture,445,1174,105,40);
-                mainGame.batch.draw(currentLoadingFrame,530,1187,14,17);
+                mainGame.batch.draw(loadingTexture,460,1174,105,40);
+                mainGame.batch.draw(currentLoadingFrame,545,1187,14,17);
                 break;
             case "houseDown":
-                mainGame.batch.draw(loadingTexture,375,380,105,40);
-                mainGame.batch.draw(currentLoadingFrame,460,393,14,17);
+                mainGame.batch.draw(loadingTexture,385,380,105,40);
+                mainGame.batch.draw(currentLoadingFrame,470,393,14,17);
                 break;
             case "houseUp":
-                mainGame.batch.draw(loadingTexture,60,0,105,40);
-                mainGame.batch.draw(currentLoadingFrame,145,13,14,17);
+                mainGame.batch.draw(loadingTexture,65,0,105,40);
+                mainGame.batch.draw(currentLoadingFrame,150,13,14,17);
                 break;
             case "forestUp":
-                mainGame.batch.draw(loadingTexture,443,0,105,40);
-                mainGame.batch.draw(currentLoadingFrame,528,13,14,17);
+                mainGame.batch.draw(loadingTexture,455,0,105,40);
+                mainGame.batch.draw(currentLoadingFrame,540,13,14,17);
                 break;
             case "forestDown":
-
+                mainGame.batch.draw(loadingTexture,460,1380,105,40);
+                mainGame.batch.draw(currentLoadingFrame,545,1393,14,17);
                 break;
         }
     }
@@ -88,22 +87,22 @@ public class LoadingScreen implements Screen {
         switch (this.mapToLoad){
             case "houseDown":
                 this.mainGameScreen.getCameraManager().changeMap("Maps/map3.tmx");
-                knightBounds.x = 100;
+                knightBounds.x = 115;
                 knightBounds.y =  30;
                 break;
             case "houseUp":
                 this.mainGameScreen.getCameraManager().changeMap("Maps/map1.tmx");
-                knightBounds.x = 500;
+                knightBounds.x = 515;
                 knightBounds.y = 300;
                 break;
             case "forestUp":
                 this.mainGameScreen.getCameraManager().changeMap("Maps/map2.tmx");
-                knightBounds.x = 500;
+                knightBounds.x = 515;
                 knightBounds.y = 1370;
                 break;
             case "forestDown":
                 this.mainGameScreen.getCameraManager().changeMap("Maps/map1.tmx");
-                knightBounds.x = 500;
+                knightBounds.x = 515;
                 knightBounds.y = 20;
                 break;
             default:

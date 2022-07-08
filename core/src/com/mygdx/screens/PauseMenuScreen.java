@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
@@ -38,7 +37,6 @@ public class PauseMenuScreen implements Screen {
 		stage.act();
 		stage.draw();
 		
-		
 		mainGame.batch.end();
 	}
 
@@ -61,7 +59,7 @@ public class PauseMenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		stage.dispose();
+
 	}
 
 	private void addStageActors() {

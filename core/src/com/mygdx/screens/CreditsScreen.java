@@ -7,22 +7,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
 public class CreditsScreen implements Screen {
 	private final KnightsOath mainGame;
-	private Texture creditsTexture;
-	private Stage stage;
+	private final Texture creditsTexture;
+	private final Stage stage;
 	private int y;
-	private int x;
+	private final int x;
 	private float speed;
-	private ButtonManager buttonManager;
+	private final ButtonManager buttonManager;
 
 	public CreditsScreen(KnightsOath game) {
 		mainGame = game;
-		stage = new Stage(new ScreenViewport());
+		stage = new Stage();
 		creditsTexture = new Texture("Textures/Buttons/credits.png");
 		y = -670;
 		x = Gdx.graphics.getWidth()/2-creditsTexture.getWidth()/2;
@@ -84,7 +83,7 @@ public class CreditsScreen implements Screen {
 	}
 
 	private void setImagePosition() {
-		buttonManager.getBackSquareButton().setPosition(0, (float) (Gdx.graphics.getHeight() - buttonManager.getBackButton().getHeight()));
+		buttonManager.getBackSquareButton().setPosition(0,(Gdx.graphics.getHeight() - buttonManager.getBackButton().getHeight()));
 	}
 	
 	private void addListeners() {
