@@ -28,6 +28,7 @@ public class Knight extends GameEntity {
     private TextureRegion currentKnightFrame;
     private final Skeleton skeleton;
     private final MainGameScreen mainGameScreen;
+
     public Knight(float knightWidth, float knightHeight, float knightX, float knightY, KnightsOath mainGame, MainGameScreen mainGameScreen) {
         super(knightWidth, knightHeight, knightX, knightY);
         animationManager = new AnimationManager();
@@ -151,6 +152,9 @@ public class Knight extends GameEntity {
     private void playerMovement() {
         this.state = "idle";
 
+        System.out.println("x" + this.getKnightX());
+        System.out.println("y" + this.getKnightY());
+
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
 
             if (!mapCollisions.collidesTop(this.getKnightX(), this.getKnightY())) {
@@ -220,42 +224,30 @@ public class Knight extends GameEntity {
         if (mapCollisions.tpCastleUp(this.getKnightX(), this.getKnightY())) {
             knightBounds.x = 500;
             knightBounds.y = 1090;
-            System.out.println("ola");
-            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen,"castleUp"));
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "castleUp", mainGameScreen, knightBounds));
         }
 
         if (mapCollisions.tpCastleDown(this.getKnightX(), this.getKnightY())) {
             knightBounds.x = 500;
             knightBounds.y = 1200;
-            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen,"castleUp"));
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "castleDown", mainGameScreen, knightBounds));
         }
 
         if (mapCollisions.tpHouseUp(this.getKnightX(), this.getKnightY())) {
-            this.mainGameScreen.getCameraManager().changeMap("Maps/map1.tmx");
-            knightBounds.x = 500;
-            knightBounds.y = 300;
-            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen,"houseUp"));
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "houseUp", mainGameScreen, knightBounds));
         }
 
         if (mapCollisions.tpHouseDown(this.getKnightX(), this.getKnightY())) {
-            this.mainGameScreen.getCameraManager().changeMap("Maps/map3.tmx");
-            knightBounds.x = 100;
-            knightBounds.y = 30;
-            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen,"houseDown"));
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "houseDown", mainGameScreen, knightBounds));
         }
 
         if (mapCollisions.tpForestUp(this.getKnightX(), this.getKnightY())) {
-            this.mainGameScreen.getCameraManager().changeMap("Maps/map2.tmx");
-            knightBounds.x = 500;
-            knightBounds.y = 1370;
-            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen,"forestUp"));
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "forestUp", mainGameScreen, knightBounds));
         }
 
         if (mapCollisions.tpForestDown(this.getKnightX(), this.getKnightY())) {
-            this.mainGameScreen.getCameraManager().changeMap("Maps/map1.tmx");
-            knightBounds.x = 500;
-            knightBounds.y = 20;
-            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen,"forestDown"));
+
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "forestDown", mainGameScreen, knightBounds));
         }
     }
 }

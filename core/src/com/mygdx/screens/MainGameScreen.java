@@ -19,7 +19,7 @@ public class MainGameScreen implements Screen {
     private final CameraManager cameraManager;
     private final TextureManager textureManager;
     private final AnimationManager animationManager;
-    private final Knight knight;
+    public static Knight knight;
     public static float stateTime;
     public static HealthBar skeletonHealthBar;
     public static Stage stage;
