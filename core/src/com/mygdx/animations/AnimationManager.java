@@ -55,7 +55,7 @@ public class AnimationManager {
         moveRightAnimation = new Animation<>(0.075f, idleFrames);
     }
     public void loadingAnimation(){
-        tmp = TextureRegion.split(textureManager.getLoadingSheet(),textureManager.getLoadingSheet().getWidth()/5,textureManager.getLoadingSheet().getHeight()/5);
+        tmp = TextureRegion.split(textureManager.getLoadingAnimationSheet(),textureManager.getLoadingAnimationSheet().getWidth()/5,textureManager.getLoadingAnimationSheet().getHeight()/5);
 
         idleFrames = new TextureRegion[25];
 

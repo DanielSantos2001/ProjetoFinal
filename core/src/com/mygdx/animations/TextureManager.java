@@ -25,19 +25,30 @@ public class TextureManager {
     private final Texture knightBlockLeftSheet;
     private final Texture knightBlockRightSheet;
     private final Texture executionerIdleSheet;
-    private final Texture loadingSheet;
+    private final Texture loadingAnimationSheet;
     private final Texture moveUpSheet;
     private final Texture moveDownSheet;
     private final Texture moveLeftSheet;
     private final Texture moveRightSheet;
-
+    private final Texture hudSheet;
+    private final Texture skeletonHudSheet;
+    private final Texture dialogKnightSheet;
+    private final Texture deadSheet;
+    private final Texture killedBySheet;
+    private final Texture loadingSheet;
     public TextureManager(){
+        this.loadingSheet = new Texture("Textures/Screens/loading.png");
+        this.deadSheet = new Texture("Textures/Screens/dead.png");
+        this.killedBySheet = new Texture("Textures/Screens/killedBy.png");
+        this.dialogKnightSheet = new Texture("Textures/Dialog/dialogKnight.png");
+        this.skeletonHudSheet = new Texture("Textures/Enemy/Skeleton/hudSkeleton.png");
+        this.hudSheet = new Texture("Textures/Char/HUD.png");
         this.moveRightSheet = new Texture("Textures/Tutorial/moveRight.png");
         this.moveLeftSheet = new Texture("Textures/Tutorial/moveLeft.png");
         this.moveDownSheet = new Texture("Textures/Tutorial/moveDown.png");
         this.moveUpSheet = new Texture("Textures/Tutorial/moveUp.png");
         this.executionerIdleSheet = new Texture("Textures/Enemy/Executioner/executionerIdle.png");
-        this.loadingSheet = new Texture("loadingAnimation.png");
+        this.loadingAnimationSheet = new Texture("Textures/Screens/loadingAnimation.png");
         this.knightIdleSheet = new Texture("Textures/Char/knightIdle.png");
         this.skeletonIdleSheet = new Texture("Textures/Enemy/Skeleton/skeletonIdle.png");
         this.skeletonDeathSheet = new Texture("Textures/Enemy/Skeleton/skeletonDeath.png");
@@ -61,9 +72,15 @@ public class TextureManager {
         this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getLoadingSheet(){return this.loadingSheet;}
+    public Texture getKilledBySheet(){return this.killedBySheet;}
+    public Texture getDeadSheet(){return this.deadSheet;}
+    public Texture getDialogKnightSheet(){return this.dialogKnightSheet;}
+    public Texture getSkeletonHudSheet(){return this.skeletonHudSheet;}
+    public Texture getHudSheet(){return this.hudSheet;}
     public Texture getMoveRightSheet(){return this.moveRightSheet;}
     public Texture getExecutionerIdleSheet(){return this.executionerIdleSheet;}
-    public Texture getLoadingSheet(){return this.loadingSheet;}
+    public Texture getLoadingAnimationSheet(){return this.loadingAnimationSheet;}
     public Texture getSkeletonDeathSheet(){return this.skeletonDeathSheet;}
     public Texture getKnightIdleSheet() {
         return this.knightIdleSheet;

@@ -1,9 +1,7 @@
 package com.mygdx.models;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.animations.AnimationManager;
 import com.mygdx.animations.TextureManager;
 
@@ -76,7 +74,7 @@ public class Skeleton extends GameEntity {
         int diffX;
         int diffY;
 
-        if ( knightX > 815.9621f &&  knightX < 989.7722f && knightY > 884.583f && knightY < 1026.9208f) {
+        if ( knightX > 834.8696f &&  knightX < 1008.2352f && knightY > 886.01495f && knightY < 1025.3497f) {
             MoveToX = (int) knightX;
             MoveToY = (int) knightY;
 

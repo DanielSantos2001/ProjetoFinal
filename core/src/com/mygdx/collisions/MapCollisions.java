@@ -59,4 +59,14 @@ public class MapCollisions {
         TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (knightX / collisionLayer.getTileWidth()), (int) (knightY / collisionLayer.getTileHeight()));
         return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("tpForestDown");
     }
+
+    public boolean tpCaveUp(float knightX,float knightY) {
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (knightX / collisionLayer.getTileWidth()), (int) (knightY / collisionLayer.getTileHeight()));
+        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("tpCaveUp");
+    }
+
+    public boolean tpCaveDown(float knightX,float knightY) {
+        TiledMapTileLayer.Cell cell = collisionLayer.getCell((int) (knightX / collisionLayer.getTileWidth()), (int) (knightY / collisionLayer.getTileHeight()));
+        return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("tpCaveDown");
+    }
 }

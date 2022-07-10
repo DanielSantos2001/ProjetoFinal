@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
@@ -21,7 +22,7 @@ public class CreditsScreen implements Screen {
 
 	public CreditsScreen(KnightsOath game) {
 		mainGame = game;
-		stage = new Stage();
+		stage = new Stage(new ScreenViewport());
 		creditsTexture = new Texture("Textures/Buttons/credits.png");
 		y = -670;
 		x = Gdx.graphics.getWidth()/2-creditsTexture.getWidth()/2;

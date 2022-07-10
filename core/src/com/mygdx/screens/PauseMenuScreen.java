@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.ButtonManager;
 import com.mygdx.game.KnightsOath;
 
@@ -17,7 +18,7 @@ public class PauseMenuScreen implements Screen {
 	public PauseMenuScreen(KnightsOath game, Screen parent) {
 		mainGame = game;
 		parentScreen = parent;
-		stage = new Stage();
+		stage = new Stage(new ScreenViewport());
 		buttonManager = ButtonManager.getInstance();
 	}
 

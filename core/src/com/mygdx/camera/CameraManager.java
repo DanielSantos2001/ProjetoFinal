@@ -17,17 +17,19 @@ public class CameraManager {
 	private TiledMapRenderer renderer;
 	private final AssetManager assetManager;
 	private final OrthoCamController cameraController;
+	private String mapPath;
 
 	public CameraManager() {
 		camera = new OrthographicCamera(150,150);
 		assetManager = new AssetManager();
 		cameraController = new OrthoCamController(camera);
+		mapPath = "Maps/map1.tmx";
 	}
 
 	public void mapRendering() {
 		camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
 		Gdx.input.setInputProcessor(cameraController);
-		
+
 		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 		assetManager.load("Maps/map1.tmx", TiledMap.class);
 		assetManager.finishLoading();
@@ -35,12 +37,15 @@ public class CameraManager {
 		map = assetManager.get("Maps/map1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 1f);
 	}
-	
+
+	public String getMapPath(){
+		return this.mapPath;
+	}
 	public void moveCamera(Rectangle bounds) {
 		camera.position.x = bounds.x;
 		camera.position.y = bounds.y;
 	}
-	
+
 	public OrthographicCamera getCamera() {
 		return camera;
 	}
@@ -52,6 +57,7 @@ public class CameraManager {
 	public TiledMap getMap() {return map;}
 
 	public void changeMap(String file){
+		this.mapPath = file;
 		assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
 		assetManager.load(file, TiledMap.class);
 		assetManager.finishLoading();

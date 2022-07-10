@@ -1,10 +1,15 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.animations.AnimationManager;
+import com.mygdx.animations.TextureManager;
 import com.mygdx.camera.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -27,16 +32,19 @@ public class MainGameScreen implements Screen {
     public static boolean isDead = false;
     private final Image hudImage;
     public static Image skeletonHudImage;
+    private final BitmapFont font;
+    private final NinePatch ninePatchKnight;
 
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
         cameraManager = new CameraManager();
         animationManager = new AnimationManager();
+        TextureManager textureManager = new TextureManager();
         knight = new Knight(25, 25, 515, 1250, mainGame, this);
-        Texture hudTexture = new Texture("Textures/Char/HUD.png");
-        hudImage = new Image(hudTexture);
-        Texture skeletonHudTexture = new Texture("Textures/Enemy/Skeleton/hudSkeleton.png");
-        skeletonHudImage = new Image(skeletonHudTexture);
+        hudImage = new Image(textureManager.getHudSheet());
+        skeletonHudImage = new Image(textureManager.getSkeletonHudSheet());
+        font = new BitmapFont(Gdx.files.internal("Textures/Skin/ui/font-title-export.fnt"), Gdx.files.internal("Textures/Skin/ui/font-title-export.png"), false);
+        ninePatchKnight = new NinePatch(textureManager.getDialogKnightSheet());
     }
 
     @Override
@@ -45,9 +53,10 @@ public class MainGameScreen implements Screen {
 
         cameraManager.mapRendering();
 
-        stage = new Stage();
+        stage = new Stage(new ScreenViewport());
 
         setHUD();
+        addActors();
     }
 
     @Override
@@ -56,6 +65,11 @@ public class MainGameScreen implements Screen {
         stateTime += delta;
         knight.create();
         knight.render(delta);
+
+
+        if (stateTime < 1.4) {
+            setDialog();
+        }
 
         if (!isDead) {
             invincibilityTime(delta);
@@ -93,7 +107,16 @@ public class MainGameScreen implements Screen {
         return this.cameraManager;
     }
 
-    private void setHUD(){
+    private void setDialog() {
+        GlyphLayout glyphLayout = new GlyphLayout();
+        glyphLayout.setText(font,"Lets start the day !");
+        ninePatchKnight.draw(mainGame.batch,475, 1185,80,30);
+        font.getData().setScale(0.056f);
+        font.draw(mainGame.batch, glyphLayout, 495, 1205);
+        font.setColor(Color.BLACK);
+    }
+
+    private void setHUD() {
         skeletonHealthBar = new HealthBar(149, 14);
         skeletonHealthBar.setPosition(488, 466);
 
@@ -106,10 +129,13 @@ public class MainGameScreen implements Screen {
         hudImage.setHeight(120);
 
         knight.getHealthBar().setPosition(80, Gdx.graphics.getHeight() - 25);
+    }
 
+    private void addActors() {
         stage.addActor(knight.getHealthBar());
         stage.addActor(hudImage);
     }
+
     private void invincibilityTime(float delta) {
         if (skeletonAttackTimer > 0) {
             skeletonAttackTimer -= delta;

@@ -73,7 +73,9 @@ public class Knight extends GameEntity {
         currentKnightFrame = animationManager.getKnightIdleAnimation().getKeyFrame(stateTime, true);
 
         this.playerMovement();
-        skeleton.skeletonFollowPlayer(this.getKnightX(), this.getKnightY(), stateTime);
+
+        if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
+            skeleton.skeletonFollowPlayer(this.getKnightX(), this.getKnightY(), stateTime);
 
         this.mapTransitions();
 
@@ -88,12 +90,15 @@ public class Knight extends GameEntity {
                 currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime, true);
             }
 
-            mainGame.batch.draw(currentSkeletonFrame, skeleton.getSkeletonX(), skeleton.getSkeletonY(), skeleton.getSkeletonWidth(), skeleton.getSkeletonHeight());
+            if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
+                mainGame.batch.draw(currentSkeletonFrame, skeleton.getSkeletonX(), skeleton.getSkeletonY(), skeleton.getSkeletonWidth(), skeleton.getSkeletonHeight());
+
+
         } else {
             skeletonHealthBar.remove();
         }
 
-        mainGame.batch.draw(currentKnightFrame, this.getKnightX()-15, this.getKnightY()-5, this.getKnightWidth(), this.getKnightHeight());
+        mainGame.batch.draw(currentKnightFrame, this.getKnightX() - 15, this.getKnightY() - 5, this.getKnightWidth(), this.getKnightHeight());
 
     }
 
@@ -247,6 +252,16 @@ public class Knight extends GameEntity {
         if (mapCollisions.tpForestDown(this.getKnightX(), this.getKnightY())) {
 
             mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "forestDown", mainGameScreen, knightBounds));
+        }
+
+        if (mapCollisions.tpCaveUp(this.getKnightX(), this.getKnightY())) {
+
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "caveUp", mainGameScreen, knightBounds));
+        }
+
+        if (mapCollisions.tpCaveDown(this.getKnightX(), this.getKnightY())) {
+
+            mainGame.setScreen(new LoadingScreen(mainGame, mainGameScreen, "caveDown", mainGameScreen, knightBounds));
         }
     }
 }

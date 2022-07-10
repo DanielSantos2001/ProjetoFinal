@@ -17,7 +17,7 @@ public class OptionsScreen implements Screen{
 	
 	public OptionsScreen(KnightsOath game) {
 		mainGame = game;
-		stage = new Stage();
+		stage = new Stage(new ScreenViewport());
 		buttonManager = ButtonManager.getInstance();
 	}
 

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.mygdx.animations.TextureManager;
 import com.mygdx.game.KnightsOath;
 
 public class DeathScreen implements Screen {
@@ -19,11 +21,10 @@ public class DeathScreen implements Screen {
 
     public DeathScreen(KnightsOath game, String enemyType) {
         mainGame = game;
-        Texture deadTexture = new Texture("Textures/Buttons/dead.png");
-        Texture killedByTexture = new Texture("Textures/Buttons/killedBy.png");
-        deadImage = new Image(deadTexture);
-        killedByImage = new Image(killedByTexture);
-        stage = new Stage();
+        TextureManager textureManager = new TextureManager();
+        deadImage = new Image(textureManager.getDeadSheet());
+        killedByImage = new Image(textureManager.getKilledBySheet());
+        stage = new Stage(new ScreenViewport());
         this.enemyType = enemyType;
     }
 
