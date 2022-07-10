@@ -11,6 +11,11 @@
    <property name="tpHouseUp" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="1680">
+  <properties>
+   <property name="tpCaveUp" type="bool" value="true"/>
+  </properties>
+ </tile>
  <tile id="1681">
   <properties>
    <property name="blocked" type="bool" value="true"/>
@@ -19,6 +24,16 @@
  <tile id="1682">
   <properties>
    <property name="tpCastleUp" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="1760">
+  <properties>
+   <property name="tpCaveDown" type="bool" value="true"/>
+  </properties>
+ </tile>
+ <tile id="1761">
+  <properties>
+   <property name="signTutorial" type="bool" value="true"/>
   </properties>
  </tile>
  <tile id="1762">
