@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import static com.mygdx.animations.TextureManager.textureManager;
+
 public class AnimationManager {
     private Animation<TextureRegion> skeletonDeathAnimation;
     private Animation<TextureRegion> skeletonIdleAnimation;
@@ -28,15 +30,30 @@ public class AnimationManager {
     private Animation<TextureRegion> knightBlockLeftAnimation;
     private Animation<TextureRegion> loadingAnimation;
     private Animation<TextureRegion> executionerIdleAnimation;
+    private Animation<TextureRegion> kingIdleAnimation;
     private Animation<TextureRegion> moveUpAnimation;
     private Animation<TextureRegion> moveDownAnimation;
     private Animation<TextureRegion> moveLeftAnimation;
     private Animation<TextureRegion> moveRightAnimation;
-    private final TextureManager textureManager;
     private TextureRegion[][] tmp;
     private TextureRegion[] idleFrames;
-    public AnimationManager() {
-        textureManager = new TextureManager();
+    public static AnimationManager animationManager = new AnimationManager();
+    public AnimationManager() {}
+
+    public void kingIdleAnimation(){
+        tmp = TextureRegion.split(textureManager.getKingIdleSheet(),textureManager.getKingIdleSheet().getWidth()/4,textureManager.getKingIdleSheet().getHeight());
+
+        idleFrames = new TextureRegion[4];
+
+        int index = 0;
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 4; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        kingIdleAnimation = new Animation<>(0.5f, idleFrames);
     }
 
     public void moveRightAnimation(){
@@ -290,6 +307,7 @@ public class AnimationManager {
         }
     }
 
+    public Animation<TextureRegion> getKingIdleAnimation(){return this.kingIdleAnimation;}
     public Animation<TextureRegion> getMoveRightAnimation(){return this.moveRightAnimation;}
     public Animation<TextureRegion> getExecutionerIdleAnimation(){return this.executionerIdleAnimation;}
     public Animation<TextureRegion> getLoadingAnimation(){return this.loadingAnimation;}

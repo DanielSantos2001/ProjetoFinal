@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.mygdx.animations.AnimationManager;
-import com.mygdx.animations.TextureManager;
 import com.mygdx.collisions.MapCollisions;
 import com.mygdx.game.HealthBar;
 import com.mygdx.game.KnightsOath;
@@ -14,27 +12,23 @@ import com.mygdx.screens.LoadingScreen;
 import com.mygdx.screens.MainGameScreen;
 import com.mygdx.screens.PauseMenuScreen;
 
-import static com.mygdx.models.Skeleton.currentSkeletonFrame;
+import static com.mygdx.animations.AnimationManager.animationManager;
+import static com.mygdx.animations.TextureManager.textureManager;
 import static com.mygdx.screens.MainGameScreen.*;
+import static com.mygdx.systems.EnemySystem.currentSkeletonFrame;
+import static com.mygdx.systems.EnemySystem.enemySystem;
 
 public class Knight extends GameEntity {
     private final KnightsOath mainGame;
     private final Rectangle knightBounds;
-    private final TextureManager textureManager;
     private String state;
     private MapCollisions mapCollisions;
     private final HealthBar healthBar;
-    private final AnimationManager animationManager;
     private TextureRegion currentKnightFrame;
-    private final Skeleton skeleton;
     private final MainGameScreen mainGameScreen;
-
     public Knight(float knightWidth, float knightHeight, float knightX, float knightY, KnightsOath mainGame, MainGameScreen mainGameScreen) {
         super(knightWidth, knightHeight, knightX, knightY);
-        animationManager = new AnimationManager();
-        textureManager = new TextureManager();
         knightBounds = new Rectangle(knightX, knightY, knightWidth, knightHeight);
-        skeleton = new Skeleton(25, 25, 856, 977);
         healthBar = new HealthBar(142, 20);
         this.speed = 80f;
         this.mainGame = mainGame;
@@ -64,8 +58,8 @@ public class Knight extends GameEntity {
 
     @Override
     public void render(float delta) {
-        skeleton.create();
-        skeleton.render(delta);
+        enemySystem.create();
+        enemySystem.render(delta);
         this.mainGameScreen.getCameraManager().moveCamera(this.getKnightBounds());
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -75,7 +69,7 @@ public class Knight extends GameEntity {
         this.playerMovement();
 
         if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
-            skeleton.skeletonFollowPlayer(this.getKnightX(), this.getKnightY(), stateTime);
+            enemySystem.skeletonFollowPlayer(this.getKnightX(), this.getKnightY(), stateTime);
 
         this.mapTransitions();
 
@@ -86,12 +80,12 @@ public class Knight extends GameEntity {
 
         if (!isDead) {
             if (doAnimation) {
-                skeleton.verifySkeletonAttackState(this.getState());
+                enemySystem.verifySkeletonAttackState(this.getState());
                 currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime, true);
             }
 
             if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
-                mainGame.batch.draw(currentSkeletonFrame, skeleton.getSkeletonX(), skeleton.getSkeletonY(), skeleton.getSkeletonWidth(), skeleton.getSkeletonHeight());
+                mainGame.batch.draw(currentSkeletonFrame, enemySystem.getSkeleton().getSkeletonX(), enemySystem.getSkeleton().getSkeletonY(), enemySystem.getSkeleton().getSkeletonWidth(), enemySystem.getSkeleton().getSkeletonHeight());
 
 
         } else {
@@ -99,15 +93,10 @@ public class Knight extends GameEntity {
         }
 
         mainGame.batch.draw(currentKnightFrame, this.getKnightX() - 15, this.getKnightY() - 5, this.getKnightWidth(), this.getKnightHeight());
-
     }
 
     public HealthBar getHealthBar() {
         return this.healthBar;
-    }
-
-    public Skeleton getSkeleton() {
-        return this.skeleton;
     }
 
     public String getState() {
@@ -157,6 +146,8 @@ public class Knight extends GameEntity {
     }
 
     private void playerMovement() {
+        System.out.println(this.getKnightX()+"x");
+        System.out.println(this.getKnightY()+"y");
         this.state = "idle";
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {

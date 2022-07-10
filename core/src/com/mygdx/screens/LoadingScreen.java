@@ -9,12 +9,13 @@ import com.mygdx.animations.AnimationManager;
 import com.mygdx.animations.TextureManager;
 import com.mygdx.game.KnightsOath;
 
+import static com.mygdx.animations.AnimationManager.animationManager;
+import static com.mygdx.animations.TextureManager.textureManager;
+
 public class LoadingScreen implements Screen {
     private final KnightsOath mainGame;
     private final Screen parentScreen;
     private float elapsedTime;
-    private final AnimationManager animationManager;
-    private final TextureManager textureManager;
     private TextureRegion currentLoadingFrame;
     private final String mapToLoad;
     private final MainGameScreen mainGameScreen;
@@ -23,8 +24,6 @@ public class LoadingScreen implements Screen {
     public LoadingScreen(KnightsOath game, Screen parent, String mapToLoad, MainGameScreen mainGameScreen, Rectangle knightBounds){
         mainGame = game;
         parentScreen = parent;
-        animationManager = new AnimationManager();
-        textureManager = new TextureManager();
         this.mapToLoad = mapToLoad;
         this.mainGameScreen = mainGameScreen;
         this.knightBounds = knightBounds;

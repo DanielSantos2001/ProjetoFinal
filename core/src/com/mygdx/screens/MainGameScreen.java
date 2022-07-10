@@ -1,50 +1,51 @@
 package com.mygdx.screens;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.mygdx.animations.AnimationManager;
-import com.mygdx.animations.TextureManager;
+import com.mygdx.UI.Dialogue;
+import com.mygdx.UI.HUD;
 import com.mygdx.camera.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.mygdx.systems.DialogueSystem;
 import com.mygdx.game.HealthBar;
 import com.mygdx.game.KnightsOath;
 import com.mygdx.models.Knight;
+import com.mygdx.systems.NPCSystem;
+
+import static com.mygdx.UI.HUD.skeletonHudImage;
+import static com.mygdx.animations.AnimationManager.animationManager;
+import static com.mygdx.animations.TextureManager.textureManager;
+import static com.mygdx.systems.EnemySystem.enemySystem;
 
 
 public class MainGameScreen implements Screen {
     private final KnightsOath mainGame;
     private final CameraManager cameraManager;
-    private final AnimationManager animationManager;
     public static Knight knight;
     public static float stateTime;
     public static HealthBar skeletonHealthBar;
     public static Stage stage;
-    private double skeletonAttackTimer = 0;
-    private double knightAttackTimer = 0;
     public static boolean doAnimation = false;
     public static boolean isDead = false;
-    private final Image hudImage;
-    public static Image skeletonHudImage;
-    private final BitmapFont font;
-    private final NinePatch ninePatchKnight;
+    private final HUD hud;
+    private final DialogueSystem dialogueSystem;
+    private int count = 0;
+    private double skeletonAttackTimer = 0;
+    private double knightAttackTimer = 0;
+    private final NPCSystem npcSystem;
 
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
         cameraManager = new CameraManager();
-        animationManager = new AnimationManager();
-        TextureManager textureManager = new TextureManager();
         knight = new Knight(25, 25, 515, 1250, mainGame, this);
-        hudImage = new Image(textureManager.getHudSheet());
-        skeletonHudImage = new Image(textureManager.getSkeletonHudSheet());
-        font = new BitmapFont(Gdx.files.internal("Textures/Skin/ui/font-title-export.fnt"), Gdx.files.internal("Textures/Skin/ui/font-title-export.png"), false);
-        ninePatchKnight = new NinePatch(textureManager.getDialogKnightSheet());
+        hud = new HUD();
+        dialogueSystem = new DialogueSystem();
+        npcSystem = new NPCSystem(game, this);
     }
 
     @Override
@@ -55,8 +56,12 @@ public class MainGameScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        setHUD();
+        dialogueSystem.addKingDialog();
+
+        setHealthBars();
+        hud.setHUD();
         addActors();
+        detectXKey();
     }
 
     @Override
@@ -65,11 +70,10 @@ public class MainGameScreen implements Screen {
         stateTime += delta;
         knight.create();
         knight.render(delta);
+        npcSystem.create();
+        npcSystem.render(delta);
 
-
-        if (stateTime < 1.4) {
-            setDialog();
-        }
+        setStartDialog();
 
         if (!isDead) {
             invincibilityTime(delta);
@@ -107,33 +111,30 @@ public class MainGameScreen implements Screen {
         return this.cameraManager;
     }
 
-    private void setDialog() {
-        GlyphLayout glyphLayout = new GlyphLayout();
-        glyphLayout.setText(font,"Lets start the day !");
-        ninePatchKnight.draw(mainGame.batch,475, 1185,80,30);
-        font.getData().setScale(0.056f);
-        font.draw(mainGame.batch, glyphLayout, 495, 1205);
-        font.setColor(Color.BLACK);
+    private void setStartDialog() {
+        if (cameraManager.getMapPath().equals("Maps/map1.tmx")) {
+
+            if (Intersector.overlaps(dialogueSystem.getKingCircle(), knight.getKnightBounds())) {
+                dialogueSystem.kingDialog(count, mainGame);
+            } else {
+                count = 0;
+            }
+
+            if (stateTime < 1.6) {
+                dialogueSystem.setDialog(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "I have to talk \nwith the king"), mainGame);
+            }
+        }
     }
 
-    private void setHUD() {
+    private void setHealthBars() {
         skeletonHealthBar = new HealthBar(149, 14);
         skeletonHealthBar.setPosition(488, 466);
-
-        skeletonHudImage.setPosition(399, 378);
-        skeletonHudImage.setWidth(270);
-        skeletonHudImage.setHeight(120);
-
-        hudImage.setPosition(0, Gdx.graphics.getHeight() - 109);
-        hudImage.setWidth(250);
-        hudImage.setHeight(120);
-
         knight.getHealthBar().setPosition(80, Gdx.graphics.getHeight() - 25);
     }
 
     private void addActors() {
         stage.addActor(knight.getHealthBar());
-        stage.addActor(hudImage);
+        stage.addActor(hud.getHudImage());
     }
 
     private void invincibilityTime(float delta) {
@@ -143,7 +144,7 @@ public class MainGameScreen implements Screen {
 
         doAnimation = false;
 
-        if (skeletonAttackTimer == 0 && knight.getKnightBounds().overlaps(knight.getSkeleton().getSkeletonBounds())) {
+        if (skeletonAttackTimer == 0 && knight.getKnightBounds().overlaps(enemySystem.getSkeleton().getSkeletonBounds())) {
             doAnimation = true;
 
             if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
@@ -167,7 +168,7 @@ public class MainGameScreen implements Screen {
             knightAttackTimer -= delta;
         } else if (knightAttackTimer < 0) knightAttackTimer = 0;
 
-        if (knightAttackTimer == 0 && knight.getKnightBounds().overlaps(knight.getSkeleton().getSkeletonBounds())) {
+        if (knightAttackTimer == 0 && knight.getKnightBounds().overlaps(enemySystem.getSkeleton().getSkeletonBounds())) {
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 skeletonHealthBar.setValue(skeletonHealthBar.getValue() - 0.3f);
             }
@@ -182,4 +183,17 @@ public class MainGameScreen implements Screen {
             knightAttackTimer = 1.0;
         }
     }
+
+    private void detectXKey() {
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.X)
+                    count++;
+
+                return true;
+            }
+        });
+    }
+
 }

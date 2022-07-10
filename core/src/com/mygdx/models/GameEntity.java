@@ -15,6 +15,8 @@ public abstract class GameEntity {
         this.y = y;
     }
 
+    public GameEntity() {}
+
     public abstract void create();
     public abstract void update(float x,float y,boolean verifyDirection,boolean verifyCoordinate);
     public abstract void render(float delta);

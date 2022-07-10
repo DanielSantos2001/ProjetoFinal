@@ -33,14 +33,19 @@ public class TextureManager {
     private final Texture hudSheet;
     private final Texture skeletonHudSheet;
     private final Texture dialogKnightSheet;
+    private final Texture dialogKingSheet;
     private final Texture deadSheet;
     private final Texture killedBySheet;
     private final Texture loadingSheet;
+    private final Texture kingIdleSheet;
+    public static TextureManager textureManager = new TextureManager();
     public TextureManager(){
+        this.kingIdleSheet = new Texture("Textures/NPC/King/kingIdle.png");
+        this.dialogKingSheet = new Texture("Textures/Dialogue/dialogKing.png");
         this.loadingSheet = new Texture("Textures/Screens/loading.png");
         this.deadSheet = new Texture("Textures/Screens/dead.png");
         this.killedBySheet = new Texture("Textures/Screens/killedBy.png");
-        this.dialogKnightSheet = new Texture("Textures/Dialog/dialogKnight.png");
+        this.dialogKnightSheet = new Texture("Textures/Dialogue/dialogKnight.png");
         this.skeletonHudSheet = new Texture("Textures/Enemy/Skeleton/hudSkeleton.png");
         this.hudSheet = new Texture("Textures/Char/HUD.png");
         this.moveRightSheet = new Texture("Textures/Tutorial/moveRight.png");
@@ -72,6 +77,8 @@ public class TextureManager {
         this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getKingIdleSheet(){return this.kingIdleSheet;}
+    public Texture getDialogKingSheet(){return this.dialogKingSheet;}
     public Texture getLoadingSheet(){return this.loadingSheet;}
     public Texture getKilledBySheet(){return this.killedBySheet;}
     public Texture getDeadSheet(){return this.deadSheet;}
