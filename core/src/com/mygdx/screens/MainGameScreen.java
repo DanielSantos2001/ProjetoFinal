@@ -56,8 +56,10 @@ public class MainGameScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
+        dialogueSystem.addArmorSellerDialog();
         dialogueSystem.addKingDialog();
-
+        dialogueSystem.addPotionsSellerDialog();
+        dialogueSystem.addWeaponsSellerDialog();
         setHealthBars();
         hud.setHUD();
         addActors();
@@ -112,16 +114,33 @@ public class MainGameScreen implements Screen {
     }
 
     private void setStartDialog() {
+        boolean verifyDialogue = false;
         if (cameraManager.getMapPath().equals("Maps/map1.tmx")) {
 
-            if (Intersector.overlaps(dialogueSystem.getKingCircle(), knight.getKnightBounds())) {
-                dialogueSystem.kingDialog(count, mainGame);
-            } else {
-                count = 0;
-            }
+                if (Intersector.overlaps(dialogueSystem.getKingCircle(), knight.getKnightBounds())) {
+                    dialogueSystem.kingDialog(count, mainGame);
+                    verifyDialogue = true;
+                }
 
-            if (stateTime < 1.6) {
-                dialogueSystem.setDialog(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "I have to talk \nwith the king"), mainGame);
+                if(Intersector.overlaps(dialogueSystem.getArmorSellerCircle(),knight.getKnightBounds())){
+                    dialogueSystem.armorSellerDialog(count,mainGame);
+                    verifyDialogue = true;
+                }
+
+                if(Intersector.overlaps(dialogueSystem.getWeaponsSellerCircle(),knight.getKnightBounds())){
+                    dialogueSystem.weaponsSellerDialog(count,mainGame);
+                    verifyDialogue = true;
+                }
+
+                if(Intersector.overlaps(dialogueSystem.getPotionsSellerCircle(),knight.getKnightBounds())){
+                    dialogueSystem.potionsSellerDialog(count,mainGame);
+                    verifyDialogue = true;
+                }
+
+                if(!verifyDialogue)count = 0;
+
+            if (stateTime < 1.2) {
+                dialogueSystem.setDialog(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "I have to talk \nwith the king"), mainGame,475,1210,495,1235);
             }
         }
     }

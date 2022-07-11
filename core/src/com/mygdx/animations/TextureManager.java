@@ -34,12 +34,24 @@ public class TextureManager {
     private final Texture skeletonHudSheet;
     private final Texture dialogKnightSheet;
     private final Texture dialogKingSheet;
+    private final Texture dialogArmorSellerSheet;
+    private final Texture dialogWeaponsSellerSheet;
+    private final Texture dialogPotionsSellerSheet;
     private final Texture deadSheet;
     private final Texture killedBySheet;
     private final Texture loadingSheet;
     private final Texture kingIdleSheet;
+    private final Texture armorSellerSheet;
+    private final Texture weaponsSellerSheet;
+    private final Texture potionsSellerSheet;
     public static TextureManager textureManager = new TextureManager();
     public TextureManager(){
+        this.dialogPotionsSellerSheet = new Texture("Textures/Dialogue/dialogPotionsSeller.png");
+        this.dialogWeaponsSellerSheet = new Texture("Textures/Dialogue/dialogWeaponsSeller.png");
+        this.dialogArmorSellerSheet = new Texture("Textures/Dialogue/dialogArmorSeller.png");
+        this.potionsSellerSheet = new Texture("Textures/NPC/Potions Seller/potionsSellerIdle.png");
+        this.weaponsSellerSheet = new Texture("Textures/NPC/Weapons Seller/weaponsSellerIdle.png");
+        this.armorSellerSheet = new Texture("Textures/NPC/Armor Seller/armorSellerIdle.png");
         this.kingIdleSheet = new Texture("Textures/NPC/King/kingIdle.png");
         this.dialogKingSheet = new Texture("Textures/Dialogue/dialogKing.png");
         this.loadingSheet = new Texture("Textures/Screens/loading.png");
@@ -77,6 +89,12 @@ public class TextureManager {
         this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getDialogPotionsSellerSheet(){return this.dialogPotionsSellerSheet;}
+    public Texture getDialogWeaponsSellerSheet(){return this.dialogWeaponsSellerSheet;}
+    public Texture getDialogArmorSellerSheet(){return this.dialogArmorSellerSheet;}
+    public Texture getPotionsSellerSheet(){return this.potionsSellerSheet;}
+    public Texture getWeaponsSellerSheet(){return this.weaponsSellerSheet;}
+    public Texture getArmorSellerSheet(){return this.armorSellerSheet;}
     public Texture getKingIdleSheet(){return this.kingIdleSheet;}
     public Texture getDialogKingSheet(){return this.dialogKingSheet;}
     public Texture getLoadingSheet(){return this.loadingSheet;}

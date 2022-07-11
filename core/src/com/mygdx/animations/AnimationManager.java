@@ -31,6 +31,9 @@ public class AnimationManager {
     private Animation<TextureRegion> loadingAnimation;
     private Animation<TextureRegion> executionerIdleAnimation;
     private Animation<TextureRegion> kingIdleAnimation;
+    private Animation<TextureRegion> armorSellerIdleAnimation;
+    private Animation<TextureRegion> potionsSellerIdleAnimation;
+    private Animation<TextureRegion> weaponsSellerIdleAnimation;
     private Animation<TextureRegion> moveUpAnimation;
     private Animation<TextureRegion> moveDownAnimation;
     private Animation<TextureRegion> moveLeftAnimation;
@@ -39,6 +42,53 @@ public class AnimationManager {
     private TextureRegion[] idleFrames;
     public static AnimationManager animationManager = new AnimationManager();
     public AnimationManager() {}
+
+    public void armorSellerIdleAnimation(){
+        tmp = TextureRegion.split(textureManager.getArmorSellerSheet(),textureManager.getArmorSellerSheet().getWidth()/4,textureManager.getArmorSellerSheet().getHeight());
+
+        idleFrames = new TextureRegion[4];
+
+        int index = 0;
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 4; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        armorSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
+    }
+
+    public void weaponsSellerIdleAnimation(){
+        tmp = TextureRegion.split(textureManager.getWeaponsSellerSheet(),textureManager.getWeaponsSellerSheet().getWidth()/4,textureManager.getWeaponsSellerSheet().getHeight());
+
+        idleFrames = new TextureRegion[4];
+
+        int index = 0;
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 4; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        weaponsSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
+    }
+    public void potionsSellerIdleAnimation(){
+        tmp = TextureRegion.split(textureManager.getPotionsSellerSheet(),textureManager.getPotionsSellerSheet().getWidth()/4,textureManager.getPotionsSellerSheet().getHeight());
+
+        idleFrames = new TextureRegion[4];
+
+        int index = 0;
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 4; j++) {
+                idleFrames[index++] = tmp[i][j];
+            }
+        }
+
+        potionsSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
+    }
 
     public void kingIdleAnimation(){
         tmp = TextureRegion.split(textureManager.getKingIdleSheet(),textureManager.getKingIdleSheet().getWidth()/4,textureManager.getKingIdleSheet().getHeight());
@@ -307,6 +357,9 @@ public class AnimationManager {
         }
     }
 
+    public Animation<TextureRegion> getPotionsSellerIdleAnimation(){return this.potionsSellerIdleAnimation;}
+    public Animation<TextureRegion> getWeaponsSellerIdleAnimation(){return this.weaponsSellerIdleAnimation;}
+    public Animation<TextureRegion> getArmorSellerIdleAnimation(){return this.armorSellerIdleAnimation;}
     public Animation<TextureRegion> getKingIdleAnimation(){return this.kingIdleAnimation;}
     public Animation<TextureRegion> getMoveRightAnimation(){return this.moveRightAnimation;}
     public Animation<TextureRegion> getExecutionerIdleAnimation(){return this.executionerIdleAnimation;}
