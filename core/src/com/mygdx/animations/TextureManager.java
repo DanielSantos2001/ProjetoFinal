@@ -1,6 +1,7 @@
 package com.mygdx.animations;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 public class TextureManager {
     private final Texture knightIdleSheet;
@@ -44,8 +45,30 @@ public class TextureManager {
     private final Texture armorSellerSheet;
     private final Texture weaponsSellerSheet;
     private final Texture potionsSellerSheet;
+    private final Texture greyKnightSheet;
+    private final Texture villager1Sheet;
+    private final Texture villager2Sheet;
+    private final Texture villager3Sheet;
+    private final Texture villager4Sheet;
+    private final Texture villager5Sheet;
+    private final Texture villager6Sheet;
+    private final Texture shopScrollSheet;
+    private final Texture buyPotionSheet;
+    private final Texture potionSheet;
     public static TextureManager textureManager = new TextureManager();
+
+
     public TextureManager(){
+        this.potionSheet = new Texture("Textures/Char/healthPotion.png");
+        this.buyPotionSheet = new Texture("Textures/Shop/healthPotion.png");
+        this.shopScrollSheet = new Texture("Textures/Shop/shopScroll.png");
+        this.villager6Sheet = new Texture("Textures/NPC/Villager6/villager6Idle.png");
+        this.villager5Sheet = new Texture("Textures/NPC/Villager5/villager5Idle.png");
+        this.villager4Sheet = new Texture("Textures/NPC/Villager4/villager4Idle.png");
+        this.villager3Sheet = new Texture("Textures/NPC/Villager3/villager3Idle.png");
+        this.villager2Sheet= new Texture("Textures/NPC/Villager2/villager2Idle.png");
+        this.villager1Sheet = new Texture("Textures/NPC/Villager1/villager1Idle.png");
+        this.greyKnightSheet = new Texture("Textures/NPC/GreyKnight/greyKnightIdle.png");
         this.dialogPotionsSellerSheet = new Texture("Textures/Dialogue/dialogPotionsSeller.png");
         this.dialogWeaponsSellerSheet = new Texture("Textures/Dialogue/dialogWeaponsSeller.png");
         this.dialogArmorSellerSheet = new Texture("Textures/Dialogue/dialogArmorSeller.png");
@@ -89,13 +112,12 @@ public class TextureManager {
         this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getPotionSheet(){return this.potionSheet;}
+    public Texture getBuyPotionSheet(){return this.buyPotionSheet;}
+    public Texture getShopScrollSheet(){return this.shopScrollSheet;}
     public Texture getDialogPotionsSellerSheet(){return this.dialogPotionsSellerSheet;}
     public Texture getDialogWeaponsSellerSheet(){return this.dialogWeaponsSellerSheet;}
     public Texture getDialogArmorSellerSheet(){return this.dialogArmorSellerSheet;}
-    public Texture getPotionsSellerSheet(){return this.potionsSellerSheet;}
-    public Texture getWeaponsSellerSheet(){return this.weaponsSellerSheet;}
-    public Texture getArmorSellerSheet(){return this.armorSellerSheet;}
-    public Texture getKingIdleSheet(){return this.kingIdleSheet;}
     public Texture getDialogKingSheet(){return this.dialogKingSheet;}
     public Texture getLoadingSheet(){return this.loadingSheet;}
     public Texture getKilledBySheet(){return this.killedBySheet;}
@@ -115,6 +137,38 @@ public class TextureManager {
         return this.skeletonIdleSheet;
     }
     public Texture getSkeletonWalkBackSheet(){return  this.skeletonWalkBackSheet; }
+
+
+    public Texture getNpcIdleSheet(String npcIdleSheet){
+        switch (npcIdleSheet) {
+            case "king":
+                return this.kingIdleSheet;
+            case "armorSeller":
+                return this.armorSellerSheet;
+            case "potionsSeller":
+                return this.potionsSellerSheet;
+            case "weaponsSeller":
+                return this.weaponsSellerSheet;
+            case "greyKnight":
+                return this.greyKnightSheet;
+            case "villager1":
+                return this.villager1Sheet;
+            case "villager2":
+                return this.villager2Sheet;
+            case "villager3":
+                return this.villager3Sheet;
+            case "villager4":
+                return this.villager4Sheet;
+            case "villager5":
+                return this.villager5Sheet;
+            case "villager6":
+                return this.villager6Sheet;
+            default:
+                break;
+        }
+
+        return null;
+    }
     public Texture getKnightWalkSheet(String walkSheet) {
         switch(walkSheet) {
             case "right":

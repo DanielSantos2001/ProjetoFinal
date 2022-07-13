@@ -146,8 +146,8 @@ public class Knight extends GameEntity {
     }
 
     private void playerMovement() {
-        System.out.println(this.getKnightX()+"x");
-        System.out.println(this.getKnightY()+"y");
+        //System.out.println(this.getKnightX()+"x");
+        //System.out.println(this.getKnightY()+"y");
         this.state = "idle";
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {

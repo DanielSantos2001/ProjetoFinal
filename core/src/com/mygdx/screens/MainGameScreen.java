@@ -20,6 +20,7 @@ import com.mygdx.systems.NPCSystem;
 import static com.mygdx.UI.HUD.skeletonHudImage;
 import static com.mygdx.animations.AnimationManager.animationManager;
 import static com.mygdx.animations.TextureManager.textureManager;
+import static com.mygdx.screens.ShopScreen.potionCount;
 import static com.mygdx.systems.EnemySystem.enemySystem;
 
 
@@ -44,7 +45,7 @@ public class MainGameScreen implements Screen {
         cameraManager = new CameraManager();
         knight = new Knight(25, 25, 515, 1250, mainGame, this);
         hud = new HUD();
-        dialogueSystem = new DialogueSystem();
+        dialogueSystem = new DialogueSystem(this);
         npcSystem = new NPCSystem(game, this);
     }
 
@@ -56,14 +57,11 @@ public class MainGameScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        dialogueSystem.addArmorSellerDialog();
-        dialogueSystem.addKingDialog();
-        dialogueSystem.addPotionsSellerDialog();
-        dialogueSystem.addWeaponsSellerDialog();
+        addDialogs();
         setHealthBars();
         hud.setHUD();
         addActors();
-        detectXKey();
+        detectKeys();
     }
 
     @Override
@@ -76,6 +74,12 @@ public class MainGameScreen implements Screen {
         npcSystem.render(delta);
 
         setStartDialog();
+        if(potionCount != 0){
+            stage.addActor(hud.getPotionImage());
+        }else{
+            hud.getPotionImage().remove();
+        }
+
 
         if (!isDead) {
             invincibilityTime(delta);
@@ -113,6 +117,12 @@ public class MainGameScreen implements Screen {
         return this.cameraManager;
     }
 
+    private void addDialogs(){
+        dialogueSystem.addArmorSellerDialog();
+        dialogueSystem.addKingDialog();
+        dialogueSystem.addPotionsSellerDialog();
+        dialogueSystem.addWeaponsSellerDialog();
+    }
     private void setStartDialog() {
         boolean verifyDialogue = false;
         if (cameraManager.getMapPath().equals("Maps/map1.tmx")) {
@@ -203,16 +213,28 @@ public class MainGameScreen implements Screen {
         }
     }
 
-    private void detectXKey() {
+    private void detectKeys() {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.X)
                     count++;
 
+                if(keycode == Input.Keys.R){
+                    if(potionCount <= 0)potionCount = 0;
+
+                    if(potionCount > 0){
+                        if(knight.getHealthBar().getValue() != 1.0f){
+                            potionCount--;
+                            knight.getHealthBar().setValue(knight.getHealthBar().getValue() + 0.05f);
+                        }
+                    }
+                }
+
                 return true;
             }
         });
+
     }
 
 }

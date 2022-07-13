@@ -2,45 +2,52 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class ButtonManager {
-	private Texture startTexture;
-	private Texture continueTexture;
-	private Texture optionsTexture;
-	private Texture musicTexture;
-	private Texture noMusicTexture;
-	private Texture backTexture;
-	private Texture saveTexture;
-	private Texture exitTexture;
-	private Texture creditsTexture;
-	private Texture backSquareTexture;
-	private Drawable musicDrawable;
-	private Drawable startDrawable;
-	private Drawable continueDrawable;
-	private Drawable optionsDrawable;
-	private Drawable noMusicDrawable;
-	private Drawable backDrawable;
-	private Drawable saveDrawable;
-	private Drawable exitDrawable;
-	private Drawable creditsDrawable;
-	private Drawable backSquareDrawable;
-	private ImageButton musicButton;
-	private ImageButton startButton;
-	private ImageButton continueButton;
-	private ImageButton optionsButton;
-	private ImageButton noMusicButton;
-	private ImageButton backButton;
-	private ImageButton saveButton;
-	private ImageButton exitButton;
-	private ImageButton creditsButton;
-	private ImageButton backSquareButton;
+	private final Texture startTexture;
+	private final Texture continueTexture;
+	private final Texture optionsTexture;
+	private final Texture musicTexture;
+	private final Texture noMusicTexture;
+	private final Texture backTexture;
+	private final Texture saveTexture;
+	private final Texture exitTexture;
+	private final Texture creditsTexture;
+	private final Texture backSquareTexture;
+	private final Texture exitSquareTexture;
+	private final Texture buyTexture;
+	private final Drawable buyDrawable;
+	private final Drawable exitSquareDrawable;
+	private final Drawable musicDrawable;
+	private final Drawable startDrawable;
+	private final Drawable continueDrawable;
+	private final Drawable optionsDrawable;
+	private final Drawable noMusicDrawable;
+	private final Drawable backDrawable;
+	private final Drawable saveDrawable;
+	private final Drawable exitDrawable;
+	private final Drawable creditsDrawable;
+	private final Drawable backSquareDrawable;
+	private final ImageButton buyButton;
+	private final ImageButton exitSquareButton;
+	private final ImageButton musicButton;
+	private final ImageButton startButton;
+	private final ImageButton continueButton;
+	private final ImageButton optionsButton;
+	private final ImageButton noMusicButton;
+	private final ImageButton backButton;
+	private final ImageButton saveButton;
+	private final ImageButton exitButton;
+	private final ImageButton creditsButton;
+	private final ImageButton backSquareButton;
 	private static ButtonManager button_instance = null;
 	
 	private ButtonManager() {
+		buyTexture = new Texture("Textures/Buttons/buyButton.png");
+		exitSquareTexture = new Texture("Textures/Buttons/exitSquareButton.png");
 		startTexture = new Texture("Textures/Buttons/startButton.png");
 		continueTexture = new Texture("Textures/Buttons/continueButton.png");
 		optionsTexture = new Texture("Textures/Buttons/optionsButton.png");
@@ -51,6 +58,8 @@ public class ButtonManager {
 		exitTexture = new Texture("Textures/Buttons/exitButton.png");
 		creditsTexture = new Texture("Textures/Buttons/creditsButton.png");
 		backSquareTexture = new Texture("Textures/Buttons/backSquareButton.png");
+		buyDrawable = new TextureRegionDrawable(new TextureRegion(buyTexture));
+		exitSquareDrawable = new TextureRegionDrawable(new TextureRegion(exitSquareTexture));
 		noMusicDrawable = new TextureRegionDrawable(new TextureRegion(noMusicTexture));
 		musicDrawable = new TextureRegionDrawable(new TextureRegion(musicTexture));
 		startDrawable = new TextureRegionDrawable(new TextureRegion(startTexture));
@@ -61,6 +70,8 @@ public class ButtonManager {
 		exitDrawable = new TextureRegionDrawable(new TextureRegion(exitTexture));
 		creditsDrawable = new TextureRegionDrawable(new TextureRegion(creditsTexture));
 		backSquareDrawable = new TextureRegionDrawable(new TextureRegion(backSquareTexture));
+		buyButton = new ImageButton(buyDrawable);
+		exitSquareButton = new ImageButton(exitSquareDrawable);
 		startButton = new ImageButton(startDrawable);
 		continueButton = new ImageButton(continueDrawable);
 		optionsButton = new ImageButton(optionsDrawable);
@@ -81,7 +92,9 @@ public class ButtonManager {
 
 		return button_instance;
 	}
-	
+
+	public ImageButton getBuyButton(){return buyButton;}
+	public ImageButton getExitSquareButton(){return exitSquareButton;}
 	public ImageButton getMusicButton() {
 		return musicButton;
 	}

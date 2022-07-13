@@ -34,6 +34,13 @@ public class AnimationManager {
     private Animation<TextureRegion> armorSellerIdleAnimation;
     private Animation<TextureRegion> potionsSellerIdleAnimation;
     private Animation<TextureRegion> weaponsSellerIdleAnimation;
+    private Animation<TextureRegion> greyKnightIdleAnimation;
+    private Animation<TextureRegion> villager1IdleAnimation;
+    private Animation<TextureRegion> villager2IdleAnimation;
+    private Animation<TextureRegion> villager3IdleAnimation;
+    private Animation<TextureRegion> villager4IdleAnimation;
+    private Animation<TextureRegion> villager5IdleAnimation;
+    private Animation<TextureRegion> villager6IdleAnimation;
     private Animation<TextureRegion> moveUpAnimation;
     private Animation<TextureRegion> moveDownAnimation;
     private Animation<TextureRegion> moveLeftAnimation;
@@ -43,8 +50,8 @@ public class AnimationManager {
     public static AnimationManager animationManager = new AnimationManager();
     public AnimationManager() {}
 
-    public void armorSellerIdleAnimation(){
-        tmp = TextureRegion.split(textureManager.getArmorSellerSheet(),textureManager.getArmorSellerSheet().getWidth()/4,textureManager.getArmorSellerSheet().getHeight());
+    public void npcIdleAnimation(String npc,Texture npcIdleSheet){
+        tmp = TextureRegion.split(npcIdleSheet,npcIdleSheet.getWidth()/4,npcIdleSheet.getHeight());
 
         idleFrames = new TextureRegion[4];
 
@@ -56,55 +63,44 @@ public class AnimationManager {
             }
         }
 
-        armorSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
-    }
-
-    public void weaponsSellerIdleAnimation(){
-        tmp = TextureRegion.split(textureManager.getWeaponsSellerSheet(),textureManager.getWeaponsSellerSheet().getWidth()/4,textureManager.getWeaponsSellerSheet().getHeight());
-
-        idleFrames = new TextureRegion[4];
-
-        int index = 0;
-
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 4; j++) {
-                idleFrames[index++] = tmp[i][j];
-            }
+        switch (npc) {
+            case "king":
+                kingIdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "armorSeller":
+                armorSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "potionsSeller":
+                potionsSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "weaponsSeller":
+                weaponsSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "greyKnight":
+                greyKnightIdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "villager1":
+                villager1IdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "villager2":
+                villager2IdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "villager3":
+                villager3IdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "villager4":
+                villager4IdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "villager5":
+                villager5IdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            case "villager6":
+                villager6IdleAnimation = new Animation<>(0.5f, idleFrames);
+                break;
+            default:
         }
-
-        weaponsSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
-    }
-    public void potionsSellerIdleAnimation(){
-        tmp = TextureRegion.split(textureManager.getPotionsSellerSheet(),textureManager.getPotionsSellerSheet().getWidth()/4,textureManager.getPotionsSellerSheet().getHeight());
-
-        idleFrames = new TextureRegion[4];
-
-        int index = 0;
-
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 4; j++) {
-                idleFrames[index++] = tmp[i][j];
-            }
-        }
-
-        potionsSellerIdleAnimation = new Animation<>(0.5f, idleFrames);
     }
 
-    public void kingIdleAnimation(){
-        tmp = TextureRegion.split(textureManager.getKingIdleSheet(),textureManager.getKingIdleSheet().getWidth()/4,textureManager.getKingIdleSheet().getHeight());
-
-        idleFrames = new TextureRegion[4];
-
-        int index = 0;
-
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 4; j++) {
-                idleFrames[index++] = tmp[i][j];
-            }
-        }
-
-        kingIdleAnimation = new Animation<>(0.5f, idleFrames);
-    }
 
     public void moveRightAnimation(){
         tmp = TextureRegion.split(textureManager.getMoveRightSheet(),textureManager.getMoveRightSheet().getWidth()/5,textureManager.getMoveRightSheet().getHeight()/8);
@@ -356,11 +352,7 @@ public class AnimationManager {
 
         }
     }
-
-    public Animation<TextureRegion> getPotionsSellerIdleAnimation(){return this.potionsSellerIdleAnimation;}
-    public Animation<TextureRegion> getWeaponsSellerIdleAnimation(){return this.weaponsSellerIdleAnimation;}
-    public Animation<TextureRegion> getArmorSellerIdleAnimation(){return this.armorSellerIdleAnimation;}
-    public Animation<TextureRegion> getKingIdleAnimation(){return this.kingIdleAnimation;}
+    
     public Animation<TextureRegion> getMoveRightAnimation(){return this.moveRightAnimation;}
     public Animation<TextureRegion> getExecutionerIdleAnimation(){return this.executionerIdleAnimation;}
     public Animation<TextureRegion> getLoadingAnimation(){return this.loadingAnimation;}
@@ -381,6 +373,36 @@ public class AnimationManager {
         return skeletonWalkBackAnimation;
     }
 
+    public Animation<TextureRegion> getNpcIdleAnimation(String npcAnimation){
+
+        switch (npcAnimation) {
+            case "king":
+                return kingIdleAnimation;
+            case "armorSeller":
+                return armorSellerIdleAnimation;
+            case "potionsSeller":
+                return potionsSellerIdleAnimation;
+            case "weaponsSeller":
+                return weaponsSellerIdleAnimation;
+            case "greyKnight":
+                return greyKnightIdleAnimation;
+            case "villager1":
+                return villager1IdleAnimation;
+            case "villager2":
+                return villager2IdleAnimation;
+            case "villager3":
+                return villager3IdleAnimation;
+            case "villager4":
+                return villager4IdleAnimation;
+            case "villager5":
+                return villager5IdleAnimation;
+            case "villager6":
+                return villager6IdleAnimation;
+            default:
+                break;
+        }
+        return null;
+    }
     public Animation<TextureRegion> getKnightWalkAnimation(String walkAnimation) {
 
         switch (walkAnimation) {

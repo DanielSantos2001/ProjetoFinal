@@ -1,6 +1,7 @@
 package com.mygdx.systems;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -9,10 +10,9 @@ import com.badlogic.gdx.math.Circle;
 import com.mygdx.UI.Dialogue;
 import com.mygdx.animations.TextureManager;
 import com.mygdx.game.KnightsOath;
+import com.mygdx.screens.ShopScreen;
 
 import java.util.ArrayList;
-
-
 
 public class DialogueSystem {
     private final ArrayList<Dialogue> kingDialog;
@@ -25,7 +25,9 @@ public class DialogueSystem {
     private final Circle armorSellerCircle;
     private final Circle weaponsSellerCircle;
     private final Circle potionsSellerCircle;
-    public DialogueSystem() {
+    private final Screen parentScreen;
+    public DialogueSystem(Screen parent) {
+        parentScreen = parent;
         kingCircle = new Circle(527.69653f, 1292.4524f, 10);
         armorSellerCircle = new Circle(615.8702f,390.90527f,5);
         weaponsSellerCircle = new Circle(775.6982f,390.90527f,5);
@@ -72,24 +74,33 @@ public class DialogueSystem {
     public void kingDialog(int count,KnightsOath game){
         if(count < kingDialog.size()){
             setDialog(kingDialog.get(count),game,475,1210,495,1235);
+
         }
     }
 
     public void armorSellerDialog(int count,KnightsOath game){
         if(count < armorSellerDialog.size()/2){
             setDialog(armorSellerDialog.get(count),game,562,330,582,352);
+        }else{
+            game.setScreen(new ShopScreen(game,parentScreen,"armorSeller"));
         }
+
+
     }
 
     public void weaponsSellerDialog(int count,KnightsOath game){
         if(count < weaponsSellerDialog.size()/2){
             setDialog(weaponsSellerDialog.get(count),game,722,330,742,352);
+        }else{
+            game.setScreen(new ShopScreen(game,parentScreen,"weaponsSeller"));
         }
     }
 
     public void potionsSellerDialog(int count,KnightsOath game){
         if(count < potionsSellerDialog.size()/2){
             setDialog(potionsSellerDialog.get(count),game,882,330,902,352);
+        }else{
+            game.setScreen(new ShopScreen(game,parentScreen,"potionsSeller"));
         }
     }
 
@@ -101,7 +112,6 @@ public class DialogueSystem {
         font.draw(mainGame.batch, glyphLayout, fontX, fontY);
         font.setColor(Color.BLACK);
     }
-
     public Circle getKingCircle(){return this.kingCircle;}
     public Circle getArmorSellerCircle(){return this.armorSellerCircle;}
     public Circle getWeaponsSellerCircle(){return this.weaponsSellerCircle;}
