@@ -9,7 +9,7 @@ import com.mygdx.screens.MainMenuScreen;
 public class KnightsOath extends Game {
 	public SpriteBatch batch;
 	private Viewport viewport;
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

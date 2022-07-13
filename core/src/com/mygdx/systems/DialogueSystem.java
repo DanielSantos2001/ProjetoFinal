@@ -14,6 +14,8 @@ import com.mygdx.screens.ShopScreen;
 
 import java.util.ArrayList;
 
+import static com.mygdx.screens.MainGameScreen.count;
+
 public class DialogueSystem {
     private final ArrayList<Dialogue> kingDialog;
     private final ArrayList<Dialogue> armorSellerDialog;
@@ -74,33 +76,33 @@ public class DialogueSystem {
     public void kingDialog(int count,KnightsOath game){
         if(count < kingDialog.size()){
             setDialog(kingDialog.get(count),game,475,1210,495,1235);
-
         }
     }
 
-    public void armorSellerDialog(int count,KnightsOath game){
-        if(count < armorSellerDialog.size()/2){
+    public void armorSellerDialog(KnightsOath game){
+        if(count < armorSellerDialog.size()){
             setDialog(armorSellerDialog.get(count),game,562,330,582,352);
         }else{
             game.setScreen(new ShopScreen(game,parentScreen,"armorSeller"));
+            count = 0;
         }
-
-
     }
 
-    public void weaponsSellerDialog(int count,KnightsOath game){
-        if(count < weaponsSellerDialog.size()/2){
+    public void weaponsSellerDialog(KnightsOath game){
+        if(count < weaponsSellerDialog.size()){
             setDialog(weaponsSellerDialog.get(count),game,722,330,742,352);
         }else{
             game.setScreen(new ShopScreen(game,parentScreen,"weaponsSeller"));
+            count = 0;
         }
     }
 
-    public void potionsSellerDialog(int count,KnightsOath game){
-        if(count < potionsSellerDialog.size()/2){
+    public void potionsSellerDialog(KnightsOath game){
+        if(count < potionsSellerDialog.size()){
             setDialog(potionsSellerDialog.get(count),game,882,330,902,352);
         }else{
             game.setScreen(new ShopScreen(game,parentScreen,"potionsSeller"));
+            count = 0;
         }
     }
 
@@ -116,4 +118,7 @@ public class DialogueSystem {
     public Circle getArmorSellerCircle(){return this.armorSellerCircle;}
     public Circle getWeaponsSellerCircle(){return this.weaponsSellerCircle;}
     public Circle getPotionsSellerCircle(){return this.potionsSellerCircle;}
+    public ArrayList<Dialogue> getArmorSellerDialog(){return this.armorSellerDialog;}
+    public ArrayList<Dialogue> getPotionsSellerDialog(){return this.potionsSellerDialog;}
+    public ArrayList<Dialogue> getWeaponsSellerDialog(){return this.weaponsSellerDialog;}
 }

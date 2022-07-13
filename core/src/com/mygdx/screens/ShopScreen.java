@@ -20,7 +20,7 @@ public class ShopScreen implements Screen {
     private final Image shopImage;
     private final Image buyPotionImage;
     private final ButtonManager buttonManager;
-    private String sellerType;
+    private final String sellerType;
     public static int potionCount = 0;
 
     public ShopScreen(KnightsOath game, Screen parent,String sellerType){

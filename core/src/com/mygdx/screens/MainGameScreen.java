@@ -35,7 +35,7 @@ public class MainGameScreen implements Screen {
     public static boolean isDead = false;
     private final HUD hud;
     private final DialogueSystem dialogueSystem;
-    private int count = 0;
+    public static int count = 0;
     private double skeletonAttackTimer = 0;
     private double knightAttackTimer = 0;
     private final NPCSystem npcSystem;
@@ -57,6 +57,7 @@ public class MainGameScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
+        clearDialogs();
         addDialogs();
         setHealthBars();
         hud.setHUD();
@@ -117,6 +118,11 @@ public class MainGameScreen implements Screen {
         return this.cameraManager;
     }
 
+    private void clearDialogs(){
+        dialogueSystem.getArmorSellerDialog().clear();
+        dialogueSystem.getPotionsSellerDialog().clear();
+        dialogueSystem.getWeaponsSellerDialog().clear();
+    }
     private void addDialogs(){
         dialogueSystem.addArmorSellerDialog();
         dialogueSystem.addKingDialog();
@@ -133,23 +139,23 @@ public class MainGameScreen implements Screen {
                 }
 
                 if(Intersector.overlaps(dialogueSystem.getArmorSellerCircle(),knight.getKnightBounds())){
-                    dialogueSystem.armorSellerDialog(count,mainGame);
+                    dialogueSystem.armorSellerDialog(mainGame);
                     verifyDialogue = true;
                 }
 
                 if(Intersector.overlaps(dialogueSystem.getWeaponsSellerCircle(),knight.getKnightBounds())){
-                    dialogueSystem.weaponsSellerDialog(count,mainGame);
+                    dialogueSystem.weaponsSellerDialog(mainGame);
                     verifyDialogue = true;
                 }
 
                 if(Intersector.overlaps(dialogueSystem.getPotionsSellerCircle(),knight.getKnightBounds())){
-                    dialogueSystem.potionsSellerDialog(count,mainGame);
+                    dialogueSystem.potionsSellerDialog(mainGame);
                     verifyDialogue = true;
                 }
 
                 if(!verifyDialogue)count = 0;
 
-            if (stateTime < 1.2) {
+            if (stateTime < 1.0) {
                 dialogueSystem.setDialog(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "I have to talk \nwith the king"), mainGame,475,1210,495,1235);
             }
         }
