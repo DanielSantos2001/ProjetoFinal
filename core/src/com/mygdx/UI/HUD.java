@@ -3,12 +3,14 @@ package com.mygdx.UI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.animations.TextureManager;
+import com.mygdx.models.Skeleton;
 
 import static com.mygdx.animations.TextureManager.textureManager;
+import static com.mygdx.systems.EnemySystem.enemySystem;
 
 public class HUD {
     private final Image hudImage;
-    public static Image skeletonHudImage;
+    private Image skeletonHudImage;
     private final Image potionImage;
     public HUD(){
         potionImage = new Image(textureManager.getPotionSheet());
@@ -21,15 +23,18 @@ public class HUD {
         hudImage.setWidth(250);
         hudImage.setHeight(120);
 
-        skeletonHudImage.setPosition(399, 378);
-        skeletonHudImage.setWidth(270);
-        skeletonHudImage.setHeight(120);
-
         potionImage.setPosition(0,0);
         potionImage.setWidth(60);
         potionImage.setHeight(60);
     }
 
+    public void setSkeletonHUD(Skeleton skeleton){
+        skeleton.getSkeletonHud().setPosition(399, 378);
+        skeleton.getSkeletonHud().setWidth(270);
+        skeleton.getSkeletonHud().setHeight(120);
+    }
+
+    public Image getSkeletonHudImage(){return this.skeletonHudImage;}
     public Image getHudImage(){return this.hudImage;}
     public Image getPotionImage(){return this.potionImage;}
 }

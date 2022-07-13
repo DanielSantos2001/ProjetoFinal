@@ -11,13 +11,13 @@ import com.mygdx.UI.HUD;
 import com.mygdx.camera.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.mygdx.models.Skeleton;
 import com.mygdx.systems.DialogueSystem;
-import com.mygdx.game.HealthBar;
 import com.mygdx.game.KnightsOath;
 import com.mygdx.models.Knight;
 import com.mygdx.systems.NPCSystem;
+import com.mygdx.systems.TutorialSystem;
 
-import static com.mygdx.UI.HUD.skeletonHudImage;
 import static com.mygdx.animations.AnimationManager.animationManager;
 import static com.mygdx.animations.TextureManager.textureManager;
 import static com.mygdx.screens.ShopScreen.potionCount;
@@ -29,16 +29,16 @@ public class MainGameScreen implements Screen {
     private final CameraManager cameraManager;
     public static Knight knight;
     public static float stateTime;
-    public static HealthBar skeletonHealthBar;
     public static Stage stage;
     public static boolean doAnimation = false;
-    public static boolean isDead = false;
     private final HUD hud;
     private final DialogueSystem dialogueSystem;
     public static int count = 0;
+    private int interactCount = 0;
     private double skeletonAttackTimer = 0;
     private double knightAttackTimer = 0;
     private final NPCSystem npcSystem;
+    private final TutorialSystem tutorialSystem;
 
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
@@ -46,6 +46,7 @@ public class MainGameScreen implements Screen {
         knight = new Knight(25, 25, 515, 1250, mainGame, this);
         hud = new HUD();
         dialogueSystem = new DialogueSystem(this);
+        tutorialSystem = new TutorialSystem(this, game);
         npcSystem = new NPCSystem(game, this);
     }
 
@@ -60,7 +61,10 @@ public class MainGameScreen implements Screen {
         clearDialogs();
         addDialogs();
         setHealthBars();
+
         hud.setHUD();
+        hud.setSkeletonHUD(enemySystem.getSkeleton());
+        hud.setSkeletonHUD(enemySystem.getTutorialSkeleton());
         addActors();
         detectKeys();
     }
@@ -73,19 +77,19 @@ public class MainGameScreen implements Screen {
         knight.render(delta);
         npcSystem.create();
         npcSystem.render(delta);
+        tutorialSystem.create();
+        tutorialSystem.render(delta);
 
-        setStartDialog();
-        if(potionCount != 0){
+        setDialog();
+        setSigns();
+
+        if (potionCount != 0) {
             stage.addActor(hud.getPotionImage());
-        }else{
+        } else {
             hud.getPotionImage().remove();
         }
 
-
-        if (!isDead) {
-            invincibilityTime(delta);
-            knightCanAttack(delta);
-        }
+        verifySkeletonDeath(delta);
 
         mainGame.batch.end();
         stage.draw();
@@ -118,52 +122,124 @@ public class MainGameScreen implements Screen {
         return this.cameraManager;
     }
 
-    private void clearDialogs(){
-        dialogueSystem.getArmorSellerDialog().clear();
-        dialogueSystem.getPotionsSellerDialog().clear();
-        dialogueSystem.getWeaponsSellerDialog().clear();
-    }
-    private void addDialogs(){
-        dialogueSystem.addArmorSellerDialog();
-        dialogueSystem.addKingDialog();
-        dialogueSystem.addPotionsSellerDialog();
-        dialogueSystem.addWeaponsSellerDialog();
-    }
-    private void setStartDialog() {
-        boolean verifyDialogue = false;
-        if (cameraManager.getMapPath().equals("Maps/map1.tmx")) {
+    private void verifySkeletonDeath(float delta) {
+        if (!enemySystem.getSkeleton().getIsDead()) {
+            if (cameraManager.getMapPath().equals("Maps/map1.tmx")) {
+                invincibilityTime(delta, enemySystem.getSkeleton());
+                knightCanAttack(delta, enemySystem.getSkeleton());
+            }
+        }
 
-                if (Intersector.overlaps(dialogueSystem.getKingCircle(), knight.getKnightBounds())) {
-                    dialogueSystem.kingDialog(count, mainGame);
-                    verifyDialogue = true;
-                }
-
-                if(Intersector.overlaps(dialogueSystem.getArmorSellerCircle(),knight.getKnightBounds())){
-                    dialogueSystem.armorSellerDialog(mainGame);
-                    verifyDialogue = true;
-                }
-
-                if(Intersector.overlaps(dialogueSystem.getWeaponsSellerCircle(),knight.getKnightBounds())){
-                    dialogueSystem.weaponsSellerDialog(mainGame);
-                    verifyDialogue = true;
-                }
-
-                if(Intersector.overlaps(dialogueSystem.getPotionsSellerCircle(),knight.getKnightBounds())){
-                    dialogueSystem.potionsSellerDialog(mainGame);
-                    verifyDialogue = true;
-                }
-
-                if(!verifyDialogue)count = 0;
-
-            if (stateTime < 1.0) {
-                dialogueSystem.setDialog(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "I have to talk \nwith the king"), mainGame,475,1210,495,1235);
+        if (!enemySystem.getTutorialSkeleton().getIsDead()) {
+            if (cameraManager.getMapPath().equals("Maps/map4.tmx")) {
+                invincibilityTime(delta, enemySystem.getTutorialSkeleton());
+                knightCanAttack(delta, enemySystem.getTutorialSkeleton());
             }
         }
     }
 
+    private void clearDialogs() {
+        dialogueSystem.getCaveWomanDialog().clear();
+        dialogueSystem.getKingDialog().clear();
+        dialogueSystem.getArmorSellerDialog().clear();
+        dialogueSystem.getPotionsSellerDialog().clear();
+        dialogueSystem.getWeaponsSellerDialog().clear();
+    }
+
+    private void addDialogs() {
+        dialogueSystem.addArmorSellerDialog();
+        dialogueSystem.addKingDialog();
+        dialogueSystem.addPotionsSellerDialog();
+        dialogueSystem.addWeaponsSellerDialog();
+        dialogueSystem.addCaveWomanDialog();
+    }
+
+    private void setDialog() {
+        boolean verifyDialogue = false;
+        if (cameraManager.getMapPath().equals("Maps/map1.tmx")) {
+
+            if (Intersector.overlaps(dialogueSystem.getKingCircle(), knight.getKnightBounds())) {
+                dialogueSystem.kingDialog(mainGame);
+                verifyDialogue = true;
+            }
+
+            if (Intersector.overlaps(dialogueSystem.getArmorSellerCircle(), knight.getKnightBounds())) {
+                dialogueSystem.armorSellerDialog(mainGame);
+                verifyDialogue = true;
+            }
+
+            if (Intersector.overlaps(dialogueSystem.getWeaponsSellerCircle(), knight.getKnightBounds())) {
+                dialogueSystem.weaponsSellerDialog(mainGame);
+                verifyDialogue = true;
+            }
+
+            if (Intersector.overlaps(dialogueSystem.getPotionsSellerCircle(), knight.getKnightBounds())) {
+                dialogueSystem.potionsSellerDialog(mainGame);
+                verifyDialogue = true;
+            }
+
+            if (stateTime < 1.0) {
+                dialogueSystem.setDialog(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "I have to talk \nwith the king"), mainGame, 475, 1210, 495, 1235);
+            }
+        }
+
+        if(cameraManager.getMapPath().equals("Maps/map4.tmx")){
+            if (Intersector.overlaps(dialogueSystem.getCaveWomanCircle(), knight.getKnightBounds())) {
+                dialogueSystem.caveWomanDialog(mainGame);
+                tutorialSystem.drawTutorialAnimations("villager");
+                verifyDialogue = true;
+            }
+        }
+
+        if (!verifyDialogue) count = 0;
+    }
+
+    private void setSigns() {
+        if (cameraManager.getMapPath().equals("Maps/map4.tmx")) {
+            if (Intersector.overlaps(tutorialSystem.getMoveUpSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("moveUp");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getMoveDownSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("moveDown");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getMoveLeftSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("moveLeft");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getMoveRightSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("moveRight");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getAttackSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("attack");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getBlockSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("block");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getUsePotionSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("potion");
+            }
+
+            if (Intersector.overlaps(tutorialSystem.getChestSign().getSignCircle(), knight.getKnightBounds())) {
+                tutorialSystem.drawTutorialAnimations("object");
+
+                if (Gdx.input.isKeyPressed(Input.Keys.E)) {
+                    tutorialSystem.drawTutorialAnimations("chest");
+                }
+            }
+
+
+
+        }
+    }
+
     private void setHealthBars() {
-        skeletonHealthBar = new HealthBar(149, 14);
-        skeletonHealthBar.setPosition(488, 466);
+        enemySystem.getSkeleton().getHealthBar().setPosition(488, 466);
+        enemySystem.getTutorialSkeleton().getHealthBar().setPosition(488, 466);
         knight.getHealthBar().setPosition(80, Gdx.graphics.getHeight() - 25);
     }
 
@@ -172,14 +248,15 @@ public class MainGameScreen implements Screen {
         stage.addActor(hud.getHudImage());
     }
 
-    private void invincibilityTime(float delta) {
+    private void invincibilityTime(float delta, Skeleton skeleton) {
         if (skeletonAttackTimer > 0) {
             skeletonAttackTimer -= delta;
         } else if (skeletonAttackTimer < 0) skeletonAttackTimer = 0;
 
         doAnimation = false;
 
-        if (skeletonAttackTimer == 0 && knight.getKnightBounds().overlaps(enemySystem.getSkeleton().getSkeletonBounds())) {
+        if (skeletonAttackTimer == 0 && knight.getKnightBounds().overlaps(skeleton.getSkeletonBounds())) {
+            System.out.println();
             doAnimation = true;
 
             if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
@@ -198,21 +275,21 @@ public class MainGameScreen implements Screen {
 
     }
 
-    private void knightCanAttack(float delta) {
+    private void knightCanAttack(float delta, Skeleton skeleton) {
         if (knightAttackTimer > 0) {
             knightAttackTimer -= delta;
         } else if (knightAttackTimer < 0) knightAttackTimer = 0;
 
-        if (knightAttackTimer == 0 && knight.getKnightBounds().overlaps(enemySystem.getSkeleton().getSkeletonBounds())) {
+        if (knightAttackTimer == 0 && knight.getKnightBounds().overlaps(skeleton.getSkeletonBounds())) {
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                skeletonHealthBar.setValue(skeletonHealthBar.getValue() - 0.3f);
+                skeleton.getHealthBar().setValue(skeleton.getHealthBar().getValue() - 0.4f);
             }
 
-            if (skeletonHealthBar.getValue() == 0.0f) {
-                isDead = true;
+            if (skeleton.getHealthBar().getValue() == 0.0f) {
+                skeleton.setIsDead(true);
 
-                skeletonHudImage.setVisible(false);
-                skeletonHealthBar.remove();
+                skeleton.getSkeletonHud().setVisible(false);
+                skeleton.getHealthBar().remove();
             }
 
             knightAttackTimer = 1.0;
@@ -226,11 +303,19 @@ public class MainGameScreen implements Screen {
                 if (keycode == Input.Keys.X)
                     count++;
 
-                if(keycode == Input.Keys.R){
-                    if(potionCount <= 0)potionCount = 0;
+                if (interactCount == 0) {
+                    if (keycode == Input.Keys.E) {
+                        potionCount++;
+                        interactCount++;
+                    }
+                }
 
-                    if(potionCount > 0){
-                        if(knight.getHealthBar().getValue() != 1.0f){
+
+                if (keycode == Input.Keys.R) {
+                    if (potionCount <= 0) potionCount = 0;
+
+                    if (potionCount > 0) {
+                        if (knight.getHealthBar().getValue() != 1.0f) {
                             potionCount--;
                             knight.getHealthBar().setValue(knight.getHealthBar().getValue() + 0.05f);
                         }

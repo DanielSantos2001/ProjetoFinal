@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Circle;
 import com.mygdx.UI.Dialogue;
-import com.mygdx.animations.TextureManager;
 import com.mygdx.game.KnightsOath;
 import com.mygdx.screens.ShopScreen;
 
 import java.util.ArrayList;
 
+import static com.mygdx.animations.TextureManager.textureManager;
 import static com.mygdx.screens.MainGameScreen.count;
 
 public class DialogueSystem {
@@ -21,12 +21,13 @@ public class DialogueSystem {
     private final ArrayList<Dialogue> armorSellerDialog;
     private final ArrayList<Dialogue> weaponsSellerDialog;
     private final ArrayList<Dialogue> potionsSellerDialog;
-    private final TextureManager textureManager;
+    private final ArrayList<Dialogue> caveWomanDialog;
     private final BitmapFont font;
     private final Circle kingCircle;
     private final Circle armorSellerCircle;
     private final Circle weaponsSellerCircle;
     private final Circle potionsSellerCircle;
+    private final Circle caveWomanCircle;
     private final Screen parentScreen;
     public DialogueSystem(Screen parent) {
         parentScreen = parent;
@@ -34,11 +35,12 @@ public class DialogueSystem {
         armorSellerCircle = new Circle(615.8702f,390.90527f,5);
         weaponsSellerCircle = new Circle(775.6982f,390.90527f,5);
         potionsSellerCircle = new Circle(935.50244f,390.90527f,5);
+        caveWomanCircle = new Circle(35,136,5);
         kingDialog = new ArrayList<>();
         armorSellerDialog = new ArrayList<>();
         weaponsSellerDialog = new ArrayList<>();
         potionsSellerDialog = new ArrayList<>();
-        textureManager = new TextureManager();
+        caveWomanDialog = new ArrayList<>();
         font = new BitmapFont(Gdx.files.internal("Textures/Skin/ui/font-title-export.fnt"), Gdx.files.internal("Textures/Skin/ui/font-title-export.png"), false);
     }
 
@@ -73,7 +75,13 @@ public class DialogueSystem {
         potionsSellerDialog.add(new Dialogue(new NinePatch((textureManager.getDialogPotionsSellerSheet())), "I sell the best \npotions in town"));
         potionsSellerDialog.add(new Dialogue(new NinePatch((textureManager.getDialogKnightSheet())), "Let me have a look"));
     }
-    public void kingDialog(int count,KnightsOath game){
+
+    public void addCaveWomanDialog(){
+        caveWomanDialog.add(new Dialogue(new NinePatch((textureManager.getDialogCaveWomanSheet())), "Congratulations on \nconcluding the \ntutorial"));
+        caveWomanDialog.add(new Dialogue(new NinePatch((textureManager.getDialogCaveWomanSheet())), "You can exit the \ncave now"));
+    }
+
+    public void kingDialog(KnightsOath game){
         if(count < kingDialog.size()){
             setDialog(kingDialog.get(count),game,475,1210,495,1235);
         }
@@ -106,6 +114,14 @@ public class DialogueSystem {
         }
     }
 
+    public void caveWomanDialog(KnightsOath game){
+        if(count < caveWomanDialog.size()){
+            setDialog(caveWomanDialog.get(count),game,-1,70,20,92);
+        }else{
+            count = 0;
+        }
+    }
+
     public void setDialog(Dialogue dialogue, KnightsOath mainGame,float frameX,float frameY,float fontX,float fontY) {
         GlyphLayout glyphLayout = new GlyphLayout();
         glyphLayout.setText(font, dialogue.getMessage());
@@ -118,7 +134,10 @@ public class DialogueSystem {
     public Circle getArmorSellerCircle(){return this.armorSellerCircle;}
     public Circle getWeaponsSellerCircle(){return this.weaponsSellerCircle;}
     public Circle getPotionsSellerCircle(){return this.potionsSellerCircle;}
+    public Circle getCaveWomanCircle(){return this.caveWomanCircle;}
+    public ArrayList<Dialogue> getKingDialog(){return this.kingDialog;}
     public ArrayList<Dialogue> getArmorSellerDialog(){return this.armorSellerDialog;}
     public ArrayList<Dialogue> getPotionsSellerDialog(){return this.potionsSellerDialog;}
     public ArrayList<Dialogue> getWeaponsSellerDialog(){return this.weaponsSellerDialog;}
+    public ArrayList<Dialogue> getCaveWomanDialog(){return this.caveWomanDialog;}
 }

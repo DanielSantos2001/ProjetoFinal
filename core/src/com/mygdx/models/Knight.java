@@ -15,8 +15,7 @@ import com.mygdx.screens.PauseMenuScreen;
 import static com.mygdx.animations.AnimationManager.animationManager;
 import static com.mygdx.animations.TextureManager.textureManager;
 import static com.mygdx.screens.MainGameScreen.*;
-import static com.mygdx.systems.EnemySystem.currentSkeletonFrame;
-import static com.mygdx.systems.EnemySystem.enemySystem;
+import static com.mygdx.systems.EnemySystem.*;
 
 public class Knight extends GameEntity {
     private final KnightsOath mainGame;
@@ -26,6 +25,7 @@ public class Knight extends GameEntity {
     private final HealthBar healthBar;
     private TextureRegion currentKnightFrame;
     private final MainGameScreen mainGameScreen;
+
     public Knight(float knightWidth, float knightHeight, float knightX, float knightY, KnightsOath mainGame, MainGameScreen mainGameScreen) {
         super(knightWidth, knightHeight, knightX, knightY);
         knightBounds = new Rectangle(knightX, knightY, knightWidth, knightHeight);
@@ -67,10 +67,7 @@ public class Knight extends GameEntity {
         currentKnightFrame = animationManager.getKnightIdleAnimation().getKeyFrame(stateTime, true);
 
         this.playerMovement();
-
-        if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
-            enemySystem.skeletonFollowPlayer(this.getKnightX(), this.getKnightY(), stateTime);
-
+        setUpEnemy();
         this.mapTransitions();
 
         this.mainGameScreen.getCameraManager().getCamera().update();
@@ -78,20 +75,7 @@ public class Knight extends GameEntity {
         this.mainGameScreen.getCameraManager().getMapRenderer().render();
         mainGame.batch.setProjectionMatrix(this.mainGameScreen.getCameraManager().getCamera().combined);
 
-        if (!isDead) {
-            if (doAnimation) {
-                enemySystem.verifySkeletonAttackState(this.getState());
-                currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime, true);
-            }
-
-            if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
-                mainGame.batch.draw(currentSkeletonFrame, enemySystem.getSkeleton().getSkeletonX(), enemySystem.getSkeleton().getSkeletonY(), enemySystem.getSkeleton().getSkeletonWidth(), enemySystem.getSkeleton().getSkeletonHeight());
-
-
-        } else {
-            skeletonHealthBar.remove();
-        }
-
+        verifySkeletonMap();
         mainGame.batch.draw(currentKnightFrame, this.getKnightX() - 15, this.getKnightY() - 5, this.getKnightWidth(), this.getKnightHeight());
     }
 
@@ -146,8 +130,8 @@ public class Knight extends GameEntity {
     }
 
     private void playerMovement() {
-        System.out.println(this.getKnightX()+"x");
-        System.out.println(this.getKnightY()+"y");
+        System.out.println(this.getKnightX() + "x");
+        System.out.println(this.getKnightY() + "y");
         this.state = "idle";
 
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -212,6 +196,40 @@ public class Knight extends GameEntity {
         animationManager.skeletonAttackAnimation(this.state, textureManager.getSkeletonAttackSheet(this.state));
         animationManager.knightBlockAnimation(this.state, textureManager.getKnightBlockSheet(this.state));
         currentKnightFrame = animationManager.getKnightWalkAnimation(this.state).getKeyFrame(stateTime, true);
+    }
+
+    private void setUpEnemy() {
+        if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
+            enemySystem.skeletonFollowPlayer(enemySystem.getSkeleton(), this.getKnightX(), this.getKnightY(), 834.8696f, 886.01495f,
+                    1008.2352f, 1025.3497f, 855.60596f, 977.9982f);
+
+
+        if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map4.tmx")) {
+            enemySystem.skeletonFollowPlayer(enemySystem.getTutorialSkeleton(), this.getKnightX(), this.getKnightY(), 163.47707f, 15.948988f,
+                    303.82486f, 184.0824f, 230.76222f, 94.94184f);
+        }
+    }
+
+    private void verifySkeletonMap() {
+        if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx"))
+            verifySkeletonDeath(enemySystem.getSkeleton());
+
+        if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map4.tmx"))
+            verifySkeletonDeath(enemySystem.getTutorialSkeleton());
+    }
+
+    private void verifySkeletonDeath(Skeleton skeleton) {
+        if (!skeleton.getIsDead()) {
+            if (doAnimation) {
+                enemySystem.verifySkeletonAttackState(this.getState());
+                currentKnightFrame = animationManager.getKnightHurtAnimation().getKeyFrame(stateTime, true);
+            }
+
+            mainGame.batch.draw(skeleton.getCurrentFrame(), skeleton.getSkeletonX(), skeleton.getSkeletonY(),
+                    skeleton.getSkeletonWidth(), skeleton.getSkeletonHeight());
+        } else {
+            skeleton.getHealthBar().remove();
+        }
     }
 
     private void mapTransitions() {

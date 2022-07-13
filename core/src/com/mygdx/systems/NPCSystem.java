@@ -23,6 +23,7 @@ public class NPCSystem extends GameEntity {
     private final NPC villager4;
     private final NPC villager5;
     private final NPC villager6;
+    private final NPC caveWoman;
     private final KnightsOath mainGame;
     private final MainGameScreen mainGameScreen;
 
@@ -41,6 +42,7 @@ public class NPCSystem extends GameEntity {
         villager4 = new NPC(13,13,595,168);
         villager5 = new NPC(13,13,508,728);
         villager6 = new NPC(13,13,870,832);
+        caveWoman = new NPC(13,13,15,130);
     }
 
     @Override
@@ -71,6 +73,7 @@ public class NPCSystem extends GameEntity {
         TextureRegion currentVillager4Frame = animationManager.getNpcIdleAnimation("villager4").getKeyFrame(stateTime,true);
         TextureRegion currentVillager5Frame = animationManager.getNpcIdleAnimation("villager5").getKeyFrame(stateTime,true);
         TextureRegion currentVillager6Frame = animationManager.getNpcIdleAnimation("villager6").getKeyFrame(stateTime,true);
+        TextureRegion currentCaveWomanFrame = animationManager.getNpcIdleAnimation("caveWoman").getKeyFrame(stateTime,true);
 
         if (this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map1.tmx")){
             mainGame.batch.draw(currentKingFrame, king.getX(), king.getY(), king.getWidth(), king.getHeight());
@@ -86,6 +89,10 @@ public class NPCSystem extends GameEntity {
             mainGame.batch.draw(currentVillager5Frame, villager5.getX(), villager5.getY(), villager5.getWidth(), villager5.getHeight());
             mainGame.batch.draw(currentVillager6Frame, villager6.getX(), villager6.getY(), villager6.getWidth(), villager6.getHeight());
         }
+
+        if(this.mainGameScreen.getCameraManager().getMapPath().equals("Maps/map4.tmx")){
+            mainGame.batch.draw(currentCaveWomanFrame,caveWoman.getX(),caveWoman.getY(),caveWoman.getWidth(),caveWoman.getHeight());
+        }
     }
     private void initializeNpcAnimation(){
         animationManager.npcIdleAnimation("king",textureManager.getNpcIdleSheet("king"));
@@ -99,5 +106,6 @@ public class NPCSystem extends GameEntity {
         animationManager.npcIdleAnimation("villager4",textureManager.getNpcIdleSheet("villager4"));
         animationManager.npcIdleAnimation("villager5",textureManager.getNpcIdleSheet("villager5"));
         animationManager.npcIdleAnimation("villager6",textureManager.getNpcIdleSheet("villager6"));
+        animationManager.npcIdleAnimation("caveWoman",textureManager.getNpcIdleSheet("caveWoman"));
     }
 }

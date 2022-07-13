@@ -1,7 +1,6 @@
 package com.mygdx.animations;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 
 public class TextureManager {
     private final Texture knightIdleSheet;
@@ -38,6 +37,7 @@ public class TextureManager {
     private final Texture dialogArmorSellerSheet;
     private final Texture dialogWeaponsSellerSheet;
     private final Texture dialogPotionsSellerSheet;
+    private final Texture dialogCaveWomanSheet;
     private final Texture deadSheet;
     private final Texture killedBySheet;
     private final Texture loadingSheet;
@@ -52,13 +52,33 @@ public class TextureManager {
     private final Texture villager4Sheet;
     private final Texture villager5Sheet;
     private final Texture villager6Sheet;
+    private final Texture caveWomanSheet;
     private final Texture shopScrollSheet;
     private final Texture buyPotionSheet;
     private final Texture potionSheet;
+    private final Texture tutorialSignSheet;
+    private final Texture attackSheet;
+    private final Texture blockSheet;
+    private final Texture useHealthSheet;
+    private final Texture chestOpeningSheet;
+    private final Texture chestSheet;
+    private final Texture interactObjectsSheet;
+    private final Texture interactVillagersSheet;
+
     public static TextureManager textureManager = new TextureManager();
 
 
     public TextureManager(){
+        this.caveWomanSheet = new Texture("Textures/NPC/Cave Woman/caveWomanIdle.png");
+        this.dialogCaveWomanSheet = new Texture("Textures/Dialogue/dialogCaveWoman.png");
+        this.interactVillagersSheet = new Texture("Textures/Tutorial/interactVillagers.png");
+        this.interactObjectsSheet = new Texture("Textures/Tutorial/interactObjects.png");
+        this.chestSheet = new Texture("Textures/Tutorial/chest.png");
+        this.chestOpeningSheet = new Texture("Textures/Tutorial/chestOpening.png");
+        this.useHealthSheet = new Texture("Textures/Tutorial/useHealthPotion.png");
+        this.blockSheet = new Texture("Textures/Tutorial/block.png");
+        this.attackSheet = new Texture("Textures/Tutorial/attack.png");
+        this.tutorialSignSheet = new Texture("Textures/Tutorial/tutorialSign.png");
         this.potionSheet = new Texture("Textures/Char/healthPotion.png");
         this.buyPotionSheet = new Texture("Textures/Shop/healthPotion.png");
         this.shopScrollSheet = new Texture("Textures/Shop/shopScroll.png");
@@ -112,6 +132,15 @@ public class TextureManager {
         this.knightBlockRightSheet = new Texture("Textures/Char/knightBlockRight.png");
     }
 
+    public Texture getDialogCaveWomanSheet(){return this.dialogCaveWomanSheet;}
+    public Texture getInteractObjectsSheet(){return this.interactObjectsSheet;}
+    public Texture getInteractVillagersSheet(){return this.interactVillagersSheet;}
+    public Texture getChestSheet(){return this.chestSheet;}
+    public Texture getChestOpeningSheet(){return this.chestOpeningSheet;}
+    public Texture getUseHealthSheet(){return this.useHealthSheet;}
+    public Texture getBlockSheet(){return this.blockSheet;}
+    public Texture getAttackSheet(){return this.attackSheet;}
+    public Texture getTutorialSignSheet(){return this.tutorialSignSheet;}
     public Texture getPotionSheet(){return this.potionSheet;}
     public Texture getBuyPotionSheet(){return this.buyPotionSheet;}
     public Texture getShopScrollSheet(){return this.shopScrollSheet;}
@@ -138,6 +167,20 @@ public class TextureManager {
     }
     public Texture getSkeletonWalkBackSheet(){return  this.skeletonWalkBackSheet; }
 
+    public Texture getMoveAnimationsSheet(String moveAnimationSheet){
+        switch (moveAnimationSheet){
+            case "moveUp":
+                return this.moveUpSheet;
+            case "moveDown":
+                return this.moveDownSheet;
+            case "moveLeft":
+                return this.moveLeftSheet;
+            default:
+                break;
+        }
+
+        return null;
+    }
 
     public Texture getNpcIdleSheet(String npcIdleSheet){
         switch (npcIdleSheet) {
@@ -163,6 +206,8 @@ public class TextureManager {
                 return this.villager5Sheet;
             case "villager6":
                 return this.villager6Sheet;
+            case "caveWoman":
+                return this.caveWomanSheet;
             default:
                 break;
         }

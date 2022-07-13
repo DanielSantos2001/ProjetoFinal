@@ -1,22 +1,22 @@
 package com.mygdx.systems;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.UI.HUD;
+import com.mygdx.game.HealthBar;
 import com.mygdx.models.GameEntity;
 import com.mygdx.models.Skeleton;
-
-import static com.mygdx.UI.HUD.skeletonHudImage;
 import static com.mygdx.animations.AnimationManager.animationManager;
 import static com.mygdx.animations.TextureManager.textureManager;
 import static com.mygdx.screens.MainGameScreen.*;
-import static com.mygdx.screens.MainGameScreen.skeletonHealthBar;
 
 public class EnemySystem extends GameEntity {
     private final Skeleton skeleton;
-    public static TextureRegion currentSkeletonFrame;
+    private final Skeleton tutorialSkeleton;
     public static EnemySystem enemySystem = new EnemySystem();
 
     public EnemySystem(){
-        skeleton = new Skeleton(25, 25, 856, 977);
+        skeleton = new Skeleton(25, 25, 856, 977,new HealthBar(149, 14),new TextureRegion(), new HUD().getSkeletonHudImage());
+        tutorialSkeleton = new Skeleton(25,25,215,90,new HealthBar(149, 14),new TextureRegion(), new HUD().getSkeletonHudImage());
     }
     @Override
     public void create() {
@@ -35,33 +35,32 @@ public class EnemySystem extends GameEntity {
 
     @Override
     public void render(float delta) {
-        currentSkeletonFrame = animationManager.getSkeletonIdleAnimation().getKeyFrame(stateTime, true);
+        skeleton.setCurrentFrame(animationManager.getSkeletonIdleAnimation().getKeyFrame(stateTime, true));
+        tutorialSkeleton.setCurrentFrame(animationManager.getSkeletonIdleAnimation().getKeyFrame(stateTime, true));
     }
 
     public Skeleton getSkeleton(){return this.skeleton;}
-    public void skeletonFollowPlayer(float knightX,float knightY,float stateTime) {
+    public Skeleton getTutorialSkeleton(){return this.tutorialSkeleton;}
+    public void skeletonFollowPlayer(Skeleton skeleton,float knightX,float knightY,float minX,float minY,float maxX,float maxY,float idleX,float idleY) {
         int MoveToX;
         int MoveToY;
         float angle;
         int diffX;
         int diffY;
 
-        if ( knightX > 834.8696f &&  knightX < 1008.2352f && knightY > 886.01495f && knightY < 1025.3497f) {
+        if ( knightX > minX &&  knightX < maxX && knightY > minY && knightY < maxY) {
             MoveToX = (int) knightX;
             MoveToY = (int) knightY;
 
-            stage.addActor(skeletonHudImage);
-            stage.addActor(skeletonHealthBar);
+            stage.addActor(skeleton.getSkeletonHud());
+            stage.addActor(skeleton.getHealthBar());
 
         } else {
-            MoveToX = (int) 855.60596f;
-            MoveToY = (int) 977.9982f;
+            MoveToX = (int) idleX;
+            MoveToY = (int) idleY;
 
-            skeletonHudImage.remove();
-            skeletonHealthBar.remove();
-
-            animationManager.skeletonWalkBackAnimation(textureManager.getSkeletonWalkBackSheet());
-            currentSkeletonFrame = animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime, true);
+            skeleton.getSkeletonHud().remove();
+            skeleton.getHealthBar().remove();
         }
 
         diffX = (int) (MoveToX - skeleton.getSkeletonX());
@@ -70,8 +69,7 @@ public class EnemySystem extends GameEntity {
 
         if (diffX == 0 && diffY == 0) {
             skeleton.setSkeletonSpeed(0.0f);
-            currentSkeletonFrame = animationManager.getSkeletonIdleAnimation().getKeyFrame(stateTime, true);
-
+            skeleton.setCurrentFrame(animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime, true));
         } else {
             skeleton.setSkeletonSpeed(0.5f);
         }
@@ -81,6 +79,7 @@ public class EnemySystem extends GameEntity {
     }
 
     public void verifySkeletonAttackState(String state) {
-        currentSkeletonFrame = animationManager.getSkeletonAttackAnimation(state).getKeyFrame(stateTime, true);
+        skeleton.setCurrentFrame(animationManager.getSkeletonAttackAnimation(state).getKeyFrame(stateTime, true));
+        tutorialSkeleton.setCurrentFrame(animationManager.getSkeletonAttackAnimation(state).getKeyFrame(stateTime, true));
     }
 }
