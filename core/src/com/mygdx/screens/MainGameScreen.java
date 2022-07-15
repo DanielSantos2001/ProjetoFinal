@@ -5,7 +5,9 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.UI.Dialogue;
 import com.mygdx.UI.HUD;
 import com.mygdx.camera.*;
@@ -38,11 +40,13 @@ public class MainGameScreen implements Screen {
     private double skeletonAttackTimer = 0;
     private double knightAttackTimer = 0;
     private final NPCSystem npcSystem;
+    private final Viewport viewport;
     private final TutorialSystem tutorialSystem;
 
     public MainGameScreen(KnightsOath game) {
         mainGame = game;
         cameraManager = new CameraManager();
+        viewport = new ExtendViewport(128,176,cameraManager.getCamera());
         knight = new Knight(25, 25, 515, 1250, mainGame, this);
         hud = new HUD();
         dialogueSystem = new DialogueSystem(this);
@@ -53,7 +57,7 @@ public class MainGameScreen implements Screen {
     @Override
     public void show() {
         animationManager.knightHurtAnimation();
-
+        viewport.apply();
         cameraManager.mapRendering();
 
         stage = new Stage(new ScreenViewport());
@@ -98,6 +102,7 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width,height);
     }
 
     @Override
@@ -238,8 +243,8 @@ public class MainGameScreen implements Screen {
     }
 
     private void setHealthBars() {
-        enemySystem.getSkeleton().getHealthBar().setPosition(488, 466);
-        enemySystem.getTutorialSkeleton().getHealthBar().setPosition(488, 466);
+        enemySystem.getSkeleton().getHealthBar().setPosition(489, 465);
+        enemySystem.getTutorialSkeleton().getHealthBar().setPosition(489, 465);
         knight.getHealthBar().setPosition(80, Gdx.graphics.getHeight() - 25);
     }
 

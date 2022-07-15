@@ -15,11 +15,10 @@ public class ButtonManager {
 	private final Texture backTexture;
 	private final Texture saveTexture;
 	private final Texture exitTexture;
+	private final Texture exitGameTexture;
 	private final Texture creditsTexture;
 	private final Texture backSquareTexture;
 	private final Texture exitSquareTexture;
-	private final Texture buyTexture;
-	private final Drawable buyDrawable;
 	private final Drawable exitSquareDrawable;
 	private final Drawable musicDrawable;
 	private final Drawable startDrawable;
@@ -29,9 +28,9 @@ public class ButtonManager {
 	private final Drawable backDrawable;
 	private final Drawable saveDrawable;
 	private final Drawable exitDrawable;
+	private final Drawable exitGameDrawable;
 	private final Drawable creditsDrawable;
 	private final Drawable backSquareDrawable;
-	private final ImageButton buyButton;
 	private final ImageButton exitSquareButton;
 	private final ImageButton musicButton;
 	private final ImageButton startButton;
@@ -41,12 +40,13 @@ public class ButtonManager {
 	private final ImageButton backButton;
 	private final ImageButton saveButton;
 	private final ImageButton exitButton;
+	private final ImageButton exitGameButton;
 	private final ImageButton creditsButton;
 	private final ImageButton backSquareButton;
 	private static ButtonManager button_instance = null;
 	
 	private ButtonManager() {
-		buyTexture = new Texture("Textures/Buttons/buyButton.png");
+		exitGameTexture = new Texture("Textures/Buttons/exitGameButton.png");
 		exitSquareTexture = new Texture("Textures/Buttons/exitSquareButton.png");
 		startTexture = new Texture("Textures/Buttons/startButton.png");
 		continueTexture = new Texture("Textures/Buttons/continueButton.png");
@@ -58,7 +58,7 @@ public class ButtonManager {
 		exitTexture = new Texture("Textures/Buttons/exitButton.png");
 		creditsTexture = new Texture("Textures/Buttons/creditsButton.png");
 		backSquareTexture = new Texture("Textures/Buttons/backSquareButton.png");
-		buyDrawable = new TextureRegionDrawable(new TextureRegion(buyTexture));
+		exitGameDrawable = new TextureRegionDrawable(new TextureRegion(exitGameTexture));
 		exitSquareDrawable = new TextureRegionDrawable(new TextureRegion(exitSquareTexture));
 		noMusicDrawable = new TextureRegionDrawable(new TextureRegion(noMusicTexture));
 		musicDrawable = new TextureRegionDrawable(new TextureRegion(musicTexture));
@@ -70,7 +70,7 @@ public class ButtonManager {
 		exitDrawable = new TextureRegionDrawable(new TextureRegion(exitTexture));
 		creditsDrawable = new TextureRegionDrawable(new TextureRegion(creditsTexture));
 		backSquareDrawable = new TextureRegionDrawable(new TextureRegion(backSquareTexture));
-		buyButton = new ImageButton(buyDrawable);
+		exitGameButton = new ImageButton(exitGameDrawable);
 		exitSquareButton = new ImageButton(exitSquareDrawable);
 		startButton = new ImageButton(startDrawable);
 		continueButton = new ImageButton(continueDrawable);
@@ -93,7 +93,7 @@ public class ButtonManager {
 		return button_instance;
 	}
 
-	public ImageButton getBuyButton(){return buyButton;}
+	public ImageButton getExitGameButton(){return exitGameButton;}
 	public ImageButton getExitSquareButton(){return exitSquareButton;}
 	public ImageButton getMusicButton() {
 		return musicButton;

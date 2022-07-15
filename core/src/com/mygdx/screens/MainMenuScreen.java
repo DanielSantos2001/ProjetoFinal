@@ -80,6 +80,7 @@ public class MainMenuScreen implements Screen {
 		stage.addActor(buttonManager.getMusicButton());
 		stage.addActor(buttonManager.getNoMusicButton());
 		stage.addActor(buttonManager.getCreditsButton());
+		stage.addActor(buttonManager.getExitGameButton());
 	}
 
 	private void setImagePosition() {
@@ -87,8 +88,11 @@ public class MainMenuScreen implements Screen {
 		buttonManager.getContinueButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getContinueButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/1.65 - buttonManager.getContinueButton().getHeight()/3));
 		buttonManager.getOptionsButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getOptionsButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/2.9 - buttonManager.getOptionsButton().getHeight()/3));
 		buttonManager.getCreditsButton().setPosition(Gdx.graphics.getWidth()/2 - buttonManager.getCreditsButton().getWidth()/2, (float) (Gdx.graphics.getHeight()/4.7 - buttonManager.getCreditsButton().getHeight()));
+		buttonManager.getExitGameButton().setPosition(0,(Gdx.graphics.getHeight() - buttonManager.getBackButton().getHeight()));
 		buttonManager.getMusicButton().setPosition(Gdx.graphics.getWidth() - buttonManager.getMusicButton().getWidth(), 0);
 		buttonManager.getNoMusicButton().setPosition(Gdx.graphics.getWidth() - buttonManager.getNoMusicButton().getWidth(), 0);
+		buttonManager.getExitGameButton().setWidth(100);
+		buttonManager.getExitGameButton().setHeight(100);
 	}
 
 	private void addListeners() {
@@ -169,6 +173,14 @@ public class MainMenuScreen implements Screen {
 			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				mainGame.setScreen(new CreditsScreen(mainGame));
+				return false;
+			}
+		});
+
+		buttonManager.getExitGameButton().addListener(new InputListener() {
+			@Override
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				System.exit(0);
 				return false;
 			}
 		});

@@ -8,10 +8,10 @@ import com.mygdx.game.HealthBar;
 public class Skeleton{
     private final Rectangle skeletonBounds;
     private float speed;
-    private HealthBar healthBar;
+    private final HealthBar healthBar;
     private boolean isDead;
     private TextureRegion currentFrame;
-    private Image skeletonHud;
+    private final Image skeletonHud;
 
     public Skeleton(float width, float height, float x, float y,HealthBar healthBar,TextureRegion currentFrame,Image skeletonHud) {
         skeletonBounds = new Rectangle(x, y,width, height);

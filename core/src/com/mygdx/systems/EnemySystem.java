@@ -61,6 +61,9 @@ public class EnemySystem extends GameEntity {
 
             skeleton.getSkeletonHud().remove();
             skeleton.getHealthBar().remove();
+
+            animationManager.skeletonWalkBackAnimation(textureManager.getSkeletonWalkBackSheet());
+            skeleton.setCurrentFrame(animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime,true));
         }
 
         diffX = (int) (MoveToX - skeleton.getSkeletonX());
@@ -69,7 +72,7 @@ public class EnemySystem extends GameEntity {
 
         if (diffX == 0 && diffY == 0) {
             skeleton.setSkeletonSpeed(0.0f);
-            skeleton.setCurrentFrame(animationManager.getSkeletonWalkBackAnimation().getKeyFrame(stateTime, true));
+            skeleton.setCurrentFrame(animationManager.getSkeletonIdleAnimation().getKeyFrame(stateTime, true));
         } else {
             skeleton.setSkeletonSpeed(0.5f);
         }
