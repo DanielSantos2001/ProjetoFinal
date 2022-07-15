@@ -25,8 +25,6 @@ public class ShopScreen implements Screen {
     private final Image shopImage;
     private final Image buyPotionImage;
     private final ButtonManager buttonManager;
-    private final Texture buyTexture;
-    private final Drawable buyDrawable;
     private final ImageButton buyButton;
     private final String sellerType;
     public static int potionCount = 0;
@@ -36,8 +34,8 @@ public class ShopScreen implements Screen {
         mainGame = game;
         parentScreen = parent;
         buttonManager = ButtonManager.getInstance();
-        buyTexture = new Texture("Textures/Buttons/buyButton.png");
-        buyDrawable = new TextureRegionDrawable(new TextureRegion(buyTexture));
+        Texture buyTexture = new Texture("Textures/Buttons/buyButton.png");
+        Drawable buyDrawable = new TextureRegionDrawable(new TextureRegion(buyTexture));
         buyButton = new ImageButton(buyDrawable);
         stage = new Stage(new ScreenViewport());
         shopImage = new Image(textureManager.getShopScrollSheet()) ;

@@ -75,8 +75,7 @@ public class OptionsScreen implements Screen{
 	}
 
 	private void setImagePosition() {
-		buttonManager.getBackButton().setX(170);
-		buttonManager.getBackButton().setY(100);
+		buttonManager.getBackButton().setPosition(Gdx.graphics.getWidth()/2-buttonManager.getBackButton().getWidth()/2,Gdx.graphics.getHeight()/4-buttonManager.getBackButton().getHeight());
 	}
 
 }

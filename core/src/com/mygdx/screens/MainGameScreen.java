@@ -243,9 +243,9 @@ public class MainGameScreen implements Screen {
     }
 
     private void setHealthBars() {
-        enemySystem.getSkeleton().getHealthBar().setPosition(489, 465);
-        enemySystem.getTutorialSkeleton().getHealthBar().setPosition(489, 465);
-        knight.getHealthBar().setPosition(80, Gdx.graphics.getHeight() - 25);
+        enemySystem.getSkeleton().getHealthBar().setPosition((float) (Gdx.graphics.getWidth()/1.005 - enemySystem.getSkeleton().getHealthBar().getWidth()), (float) (Gdx.graphics.getHeight()/1.0015 - enemySystem.getSkeleton().getHealthBar().getHeight()));
+        enemySystem.getTutorialSkeleton().getHealthBar().setPosition((float) (Gdx.graphics.getWidth()/1.005 - enemySystem.getTutorialSkeleton().getHealthBar().getWidth()), (float) (Gdx.graphics.getHeight()/1.0015 - enemySystem.getTutorialSkeleton().getHealthBar().getHeight()));
+        knight.getHealthBar().setPosition(Gdx.graphics.getWidth()/6 - knight.getHealthBar().getWidth()/6, (float) (Gdx.graphics.getHeight()/1.03 - knight.getHealthBar().getHeight()/2));
     }
 
     private void addActors() {
